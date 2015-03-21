@@ -1,0 +1,6 @@
+Apos criar um repositorio GitHub, sera feito um apontamento do local com o remoto
+criar o diretorio local com o mesmo nome do remoto
+entrar no diretorio
+digitar -> git init
+Para apontar o local repositorio ao remoto
+-> git remote add origin https://github.com/tgpmoraes/test-repo.git
