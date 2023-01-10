@@ -1,0 +1,136 @@
+{
+	"name": "AutoML",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "SparkPool04",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "fde7c75d-2d07-48b8-8f4d-c7c0748eb752"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "python"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/fbf033a1-3ebb-4140-bb7f-b406cf96c1b7/resourceGroups/data-engineering-synapse/providers/Microsoft.Synapse/workspaces/asaworkspacet20210731/bigDataPools/SparkPool04",
+				"name": "SparkPool04",
+				"type": "Spark",
+				"endpoint": "https://asaworkspacet20210731.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SparkPool04",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net",
+					"authHeader": null
+				},
+				"sparkVersion": "3.2",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"import azureml.core\n",
+					"\n",
+					"from azureml.core import Experiment, Workspace, Dataset, Datastore\n",
+					"from azureml.train.automl import AutoMLConfig\n",
+					"from notebookutils import mssparkutils\n",
+					"from azureml.data.dataset_factory import TabularDatasetFactory"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"linkedService_name = \"AzureMLService1\"\n",
+					"experiment_name = \"asaworkspacet20210731-nyc_taxi-20211122110215\"\n",
+					"\n",
+					"ws = mssparkutils.azureML.getWorkspace(linkedService_name)\n",
+					"experiment = Experiment(ws, experiment_name)"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"df = spark.sql(\"SELECT * FROM default.nyc_taxi\")\n",
+					"\n",
+					"datastore = Datastore.get_default(ws)\n",
+					"dataset = TabularDatasetFactory.register_spark_dataframe(df, datastore, name = experiment_name + \"-dataset\")"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"automl_config = AutoMLConfig(spark_context = sc,\n",
+					"                             task = \"regression\",\n",
+					"                             training_data = dataset,\n",
+					"                             label_column_name = \"fareAmount\",\n",
+					"                             primary_metric = \"spearman_correlation\",\n",
+					"                             experiment_timeout_hours = 3,\n",
+					"                             max_concurrent_iterations = 2,\n",
+					"                             enable_onnx_compatible_models = False)"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"run = experiment.submit(automl_config)"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"displayHTML(\"<a href={} target='_blank'>Your experiment in Azure Machine Learning portal: {}</a>\".format(run.get_portal_url(), run.id))"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"run.wait_for_completion()\n",
+					"\n",
+					"import mlflow\n",
+					"\n",
+					"# Get best model from automl run\n",
+					"best_run, non_onnx_model = run.get_output()\n",
+					"\n",
+					"artifact_path = experiment_name + \"_artifact\"\n",
+					"\n",
+					"mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())\n",
+					"mlflow.set_experiment(experiment_name)\n",
+					"\n",
+					"with mlflow.start_run() as run:\n",
+					"    # Save the model to the outputs directory for capture\n",
+					"    mlflow.sklearn.log_model(non_onnx_model, artifact_path)\n",
+					"\n",
+					"    # Register the model to AML model registry\n",
+					"    mlflow.register_model(\"runs:/\" + run.info.run_id + \"/\" + artifact_path, \"asaworkspacet20210731-nyc_taxi-20211122110215-Best\")"
+				]
+			}
+		]
+	}
+}

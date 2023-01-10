@@ -1,0 +1,29 @@
+{
+	"name": "DimMovieActors",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlpool01",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OpenHack"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "MovieID",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "ActorID",
+				"type": "uniqueidentifier"
+			}
+		],
+		"typeProperties": {
+			"schema": "PRD",
+			"table": "DimMovieActors"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

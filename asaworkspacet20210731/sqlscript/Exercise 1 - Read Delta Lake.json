@@ -1,0 +1,17 @@
+{
+	"name": "Exercise 1 - Read Delta Lake",
+	"properties": {
+		"content": {
+			"query": "SELECT \n InvoiceYear,\n InvoiceQuarter,\n Sum(cast([Quantity] as int)) as SalesQuantity\nFROM\n    OPENROWSET(\n        BULK 'https://asadatalaket20210731.dfs.core.windows.net/wwi/factsale-deltalake',\n   FORMAT = 'DELTA'\n    ) AS [result]\nWHERE InvoiceYear=2012\nGROUP BY\n     InvoiceYear,\n     InvoiceQuarter",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

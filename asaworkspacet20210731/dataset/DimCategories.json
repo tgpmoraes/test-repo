@@ -1,0 +1,30 @@
+{
+	"name": "DimCategories",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlpool01",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OpenHack"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "MovieCategorySK",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "MovieCategoryDescription",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "PRD",
+			"table": "DimCategories"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

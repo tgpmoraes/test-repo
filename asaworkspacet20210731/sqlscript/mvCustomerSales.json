@@ -1,0 +1,17 @@
+{
+	"name": "mvCustomerSales",
+	"properties": {
+		"content": {
+			"query": "IF EXISTS(select * FROM sys.views where name = 'mvCustomerSales')\n    DROP VIEW wwi_perf.mvCustomerSales\n    GO\n\nCREATE MATERIALIZED VIEW\n    wwi_perf.mvCustomerSales\nWITH\n(\n    DISTRIBUTION = HASH( CustomerId )\n)\nAS\nSELECT\n    FS.CustomerID\n    ,P.Seasonality\n    ,D.Year\n    ,D.Quarter\n    ,D.Month\n    ,avg(FS.TotalAmount) as AvgTotalAmount\n    ,avg(FS.ProfitAmount) as AvgProfitAmount\n    ,sum(FS.TotalAmount) as TotalAmount\n    ,sum(FS.ProfitAmount) as ProfitAmount\nFROM\n    wwi.SaleSmall FS\n    JOIN wwi.Product P ON P.ProductId = FS.ProductId\n    JOIN wwi.Date D ON FS.TransactionDateId = D.DateId\nGROUP BY\n    FS.CustomerID\n    ,P.Seasonality\n    ,D.Year\n    ,D.Quarter\n    ,D.Month\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

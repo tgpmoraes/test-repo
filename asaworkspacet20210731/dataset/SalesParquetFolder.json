@@ -1,0 +1,85 @@
+{
+	"name": "SalesParquetFolder",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "asadatalaket20210731",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"folderPath": {
+				"type": "string",
+				"defaultValue": "sale-small/Year=2017/Quarter=Q2/Month=6"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "@dataset().folderPath",
+					"type": "Expression"
+				},
+				"fileSystem": "wwi-02"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "TransactionId",
+				"type": "UTF8"
+			},
+			{
+				"name": "CustomerId",
+				"type": "INT32"
+			},
+			{
+				"name": "ProductId",
+				"type": "INT_16"
+			},
+			{
+				"name": "Quantity",
+				"type": "INT_8"
+			},
+			{
+				"name": "Price",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "TotalAmount",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "TransactionDate",
+				"type": "INT32"
+			},
+			{
+				"name": "ProfitAmount",
+				"type": "DECIMAL",
+				"precision": 38,
+				"scale": 18
+			},
+			{
+				"name": "Hour",
+				"type": "INT_8"
+			},
+			{
+				"name": "Minute",
+				"type": "INT_8"
+			},
+			{
+				"name": "StoreId",
+				"type": "INT_16"
+			},
+			{
+				"name": "Day",
+				"type": "UTF8"
+			}
+		]
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

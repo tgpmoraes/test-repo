@@ -1,0 +1,470 @@
+{
+	"name": "POC Challenge 1 Automated Load",
+	"properties": {
+		"activities": [
+			{
+				"name": "Load All Days of May",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.filenameList",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Fix bad CSV",
+							"type": "SynapseNotebook",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"notebook": {
+									"referenceName": "POC Challenge 1 Process Bad CSV",
+									"type": "NotebookReference"
+								},
+								"parameters": {
+									"filesource": {
+										"value": {
+											"value": "@item()",
+											"type": "Expression"
+										},
+										"type": "string"
+									}
+								},
+								"snapshot": true,
+								"conf": {
+									"spark.dynamicAllocation.enabled": null,
+									"spark.dynamicAllocation.minExecutors": null,
+									"spark.dynamicAllocation.maxExecutors": null
+								},
+								"numExecutors": null
+							}
+						},
+						{
+							"name": "Load fixed CSV",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Fix bad CSV",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"wildcardFileName": "*",
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "SqlDWSink",
+									"allowCopyCommand": true
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "_1",
+												"type": "String"
+											},
+											"sink": {
+												"name": "TransactionId",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
+												"name": "_2",
+												"type": "String"
+											},
+											"sink": {
+												"name": "CustomerId",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"name": "_3",
+												"type": "String"
+											},
+											"sink": {
+												"name": "ProductId",
+												"type": "Int16"
+											}
+										},
+										{
+											"source": {
+												"name": "_4",
+												"type": "String"
+											},
+											"sink": {
+												"name": "Quantity",
+												"type": "Byte"
+											}
+										},
+										{
+											"source": {
+												"name": "_5",
+												"type": "String"
+											},
+											"sink": {
+												"name": "Price",
+												"type": "Decimal"
+											}
+										},
+										{
+											"source": {
+												"name": "_6",
+												"type": "String"
+											},
+											"sink": {
+												"name": "TotalAmount",
+												"type": "Decimal"
+											}
+										},
+										{
+											"source": {
+												"name": "_7",
+												"type": "String"
+											},
+											"sink": {
+												"name": "TransactionDateId",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"name": "_8",
+												"type": "String"
+											},
+											"sink": {
+												"name": "ProfitAmount",
+												"type": "Decimal"
+											}
+										},
+										{
+											"source": {
+												"name": "_9",
+												"type": "String"
+											},
+											"sink": {
+												"name": "Hour",
+												"type": "Byte"
+											}
+										},
+										{
+											"source": {
+												"name": "_10",
+												"type": "String"
+											},
+											"sink": {
+												"name": "Minute",
+												"type": "Byte"
+											}
+										},
+										{
+											"source": {
+												"name": "_11",
+												"type": "String"
+											},
+											"sink": {
+												"name": "StoreId",
+												"type": "Int16"
+											}
+										}
+									]
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "SalesFixedCSV",
+									"type": "DatasetReference",
+									"parameters": {
+										"foldername": "@item()"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "POCSalesTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"tableName": "Sale2"
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Load All Monthly Parquet",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Load All Days of May",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.parquetMonthList",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Load One Parquet Month",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "ParquetSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"wildcardFileName": "*",
+										"enablePartitionDiscovery": false
+									}
+								},
+								"sink": {
+									"type": "SqlDWSink",
+									"allowCopyCommand": true
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "TransactionId",
+												"type": "String"
+											},
+											"sink": {
+												"name": "TransactionId",
+												"type": "Guid"
+											}
+										},
+										{
+											"source": {
+												"name": "CustomerId",
+												"type": "Int32"
+											},
+											"sink": {
+												"name": "CustomerId",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"name": "ProductId",
+												"type": "Int16"
+											},
+											"sink": {
+												"name": "ProductId",
+												"type": "Int16"
+											}
+										},
+										{
+											"source": {
+												"name": "Quantity",
+												"type": "SByte"
+											},
+											"sink": {
+												"name": "Quantity",
+												"type": "Byte"
+											}
+										},
+										{
+											"source": {
+												"name": "Price",
+												"type": "Decimal"
+											},
+											"sink": {
+												"name": "Price",
+												"type": "Decimal"
+											}
+										},
+										{
+											"source": {
+												"name": "TotalAmount",
+												"type": "Decimal"
+											},
+											"sink": {
+												"name": "TotalAmount",
+												"type": "Decimal"
+											}
+										},
+										{
+											"source": {
+												"name": "TransactionDate",
+												"type": "Int32"
+											},
+											"sink": {
+												"name": "TransactionDateId",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"name": "ProfitAmount",
+												"type": "Decimal"
+											},
+											"sink": {
+												"name": "ProfitAmount",
+												"type": "Decimal"
+											}
+										},
+										{
+											"source": {
+												"name": "Hour",
+												"type": "SByte"
+											},
+											"sink": {
+												"name": "Hour",
+												"type": "Byte"
+											}
+										},
+										{
+											"source": {
+												"name": "Minute",
+												"type": "SByte"
+											},
+											"sink": {
+												"name": "Minute",
+												"type": "Byte"
+											}
+										},
+										{
+											"source": {
+												"name": "StoreId",
+												"type": "Int16"
+											},
+											"sink": {
+												"name": "StoreId",
+												"type": "Int16"
+											}
+										}
+									]
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "SalesParquetFolder",
+									"type": "DatasetReference",
+									"parameters": {
+										"folderPath": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "POCSalesTable",
+									"type": "DatasetReference",
+									"parameters": {
+										"tableName": {
+											"value": "@pipeline().parameters.targetTable",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"filenameList": {
+				"type": "array",
+				"defaultValue": [
+					"sale-20170501.csv"
+				]
+			},
+			"targetTable": {
+				"type": "string",
+				"defaultValue": "Sale2"
+			},
+			"parquetMonthList": {
+				"type": "array",
+				"defaultValue": [
+					"sale-small/Year=2017/Quarter=Q2/Month=6",
+					"sale-small/Year=2017/Quarter=Q3/Month=7",
+					"sale-small/Year=2017/Quarter=Q3/Month=8",
+					"sale-small/Year=2017/Quarter=Q3/Month=9",
+					"sale-small/Year=2017/Quarter=Q4/Month=10",
+					"sale-small/Year=2017/Quarter=Q4/Month=11",
+					"sale-small/Year=2017/Quarter=Q4/Month=12",
+					"sale-small/Year=2018/Quarter=Q1/Month=1",
+					"sale-small/Year=2018/Quarter=Q1/Month=2",
+					"sale-small/Year=2018/Quarter=Q1/Month=3",
+					"sale-small/Year=2018/Quarter=Q2/Month=4",
+					"sale-small/Year=2018/Quarter=Q2/Month=5",
+					"sale-small/Year=2018/Quarter=Q2/Month=6",
+					"sale-small/Year=2018/Quarter=Q3/Month=7",
+					"sale-small/Year=2018/Quarter=Q3/Month=8",
+					"sale-small/Year=2018/Quarter=Q3/Month=9",
+					"sale-small/Year=2018/Quarter=Q4/Month=10",
+					"sale-small/Year=2018/Quarter=Q4/Month=11",
+					"sale-small/Year=2018/Quarter=Q4/Month=12",
+					"sale-small/Year=2019/Quarter=Q1/Month=1",
+					"sale-small/Year=2019/Quarter=Q1/Month=2",
+					"sale-small/Year=2019/Quarter=Q1/Month=3",
+					"sale-small/Year=2019/Quarter=Q2/Month=4",
+					"sale-small/Year=2019/Quarter=Q2/Month=5",
+					"sale-small/Year=2019/Quarter=Q2/Month=6",
+					"sale-small/Year=2019/Quarter=Q3/Month=7",
+					"sale-small/Year=2019/Quarter=Q3/Month=8",
+					"sale-small/Year=2019/Quarter=Q3/Month=9",
+					"sale-small/Year=2019/Quarter=Q4/Month=10",
+					"sale-small/Year=2019/Quarter=Q4/Month=11",
+					"sale-small/Year=2019/Quarter=Q4/Month=12"
+				]
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-09-29T16:32:19Z"
+	},
+	"type": "Microsoft.Synapse/workspaces/pipelines"
+}

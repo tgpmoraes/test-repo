@@ -1,0 +1,268 @@
+{
+	"name": "Setup - Export Sales to Data Lake",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "SparkPool02",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "56g",
+			"driverCores": 8,
+			"executorMemory": "56g",
+			"executorCores": 8,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "fd913090-1272-44fa-a6e8-51423e84cbd4"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/fbf033a1-3ebb-4140-bb7f-b406cf96c1b7/resourceGroups/data-engineering-synapse/providers/Microsoft.Synapse/workspaces/asaworkspacet20210731/bigDataPools/SparkPool02",
+				"name": "SparkPool02",
+				"type": "Spark",
+				"endpoint": "https://asaworkspacet20210731.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SparkPool02",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net",
+					"authHeader": null
+				},
+				"sparkVersion": "3.1",
+				"nodeCount": 10,
+				"cores": 8,
+				"memory": 56
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"wwi_sales = spark \\\r\n",
+					"    .read \\\r\n",
+					"    .option(\"sep\",\"|\") \\\r\n",
+					"    .load('abfss://dev@asadatalaket20210731.dfs.core.windows.net/bronze/wwi-factsale.csv', format=\"csv\", header=True)\r\n",
+					"\r\n",
+					"wwi_sales = wwi_sales \\\r\n",
+					"    .withColumnRenamed('Sale Key', 'SaleKey') \\\r\n",
+					"    .withColumnRenamed('City Key', 'CityKey') \\\r\n",
+					"    .withColumnRenamed('Customer Key', 'CustomerKey') \\\r\n",
+					"    .withColumnRenamed('Bill To Customer Key', 'BillToCustomerKey') \\\r\n",
+					"    .withColumnRenamed('Stock Item Key', 'StockItemKey') \\\r\n",
+					"    .withColumnRenamed('Invoice Date Key', 'InvoiceDateKey') \\\r\n",
+					"    .withColumnRenamed('Delivery Date Key', 'DeliveryDateKey') \\\r\n",
+					"    .withColumnRenamed('Salesperson Key', 'SalespersonKey') \\\r\n",
+					"    .withColumnRenamed('WWI Invoice ID', 'WWIInvoiceID') \\\r\n",
+					"    .withColumnRenamed('Description', 'Description') \\\r\n",
+					"    .withColumnRenamed('Package', 'Package') \\\r\n",
+					"    .withColumnRenamed('Quantity', 'Quantity') \\\r\n",
+					"    .withColumnRenamed('Unit Price', 'UnitPrice') \\\r\n",
+					"    .withColumnRenamed('Tax Rate', 'TaxRate') \\\r\n",
+					"    .withColumnRenamed('Total Excluding Tax', 'TotalExcludingTax') \\\r\n",
+					"    .withColumnRenamed('Tax Amount', 'TaxAmount') \\\r\n",
+					"    .withColumnRenamed('Profit', 'Profit') \\\r\n",
+					"    .withColumnRenamed('Total Including Tax', 'TotalIncludingTax') \\\r\n",
+					"    .withColumnRenamed('Total Dry Items', 'TotalDryItems') \\\r\n",
+					"    .withColumnRenamed('Total Chiller Items', 'TotalChillerItems') \\\r\n",
+					"    .withColumnRenamed('Lineage Key', 'LineageKey')"
+				],
+				"execution_count": 1
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"import numpy as np\r\n",
+					"from datetime import datetime\r\n",
+					"from dateutil.relativedelta import relativedelta"
+				],
+				"execution_count": 2
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Export WWI sales data to parquet files"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"quarters = 20\r\n",
+					"start_date = datetime(2012, 1, 1)\r\n",
+					"\r\n",
+					"for quarter in np.arange(1, quarters + 1):\r\n",
+					"\r\n",
+					"    quarter_number = 4 if quarter % 4 == 0 else quarter % 4\r\n",
+					"    end_date = start_date + relativedelta(months=3) + relativedelta(days=-1)\r\n",
+					"    \r\n",
+					"    print(f'Exporting data for {start_date.year} Q{quarter_number} ({start_date:%Y-%m-%d} : {end_date:%Y-%m-%d}) ...')\r\n",
+					"\r\n",
+					"    storage_path_parquet = f'abfss://wwi@asadatalaket20210731.dfs.core.windows.net/factsale-parquet/{start_date.year}/Q{quarter_number}'\r\n",
+					"\r\n",
+					"    wwi_sales \\\r\n",
+					"        .where((wwi_sales['InvoiceDateKey'] >= f'{start_date:%Y-%m-%d}') & (wwi_sales['InvoiceDateKey'] <= f'{end_date:%Y-%m-%d}')) \\\r\n",
+					"        .write \\\r\n",
+					"        .partitionBy('InvoiceDateKey') \\\r\n",
+					"        .mode(\"overwrite\") \\\r\n",
+					"        .parquet(storage_path_parquet)\r\n",
+					"\r\n",
+					"    start_date = end_date + relativedelta(days=1)"
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Export WWI sales data to CSV files"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"quarters = 20\r\n",
+					"start_date = datetime(2012, 1, 1)\r\n",
+					"\r\n",
+					"for quarter in np.arange(1, quarters + 1):\r\n",
+					"\r\n",
+					"    quarter_number = 4 if quarter % 4 == 0 else quarter % 4\r\n",
+					"    end_date = start_date + relativedelta(months=3) + relativedelta(days=-1)\r\n",
+					"    \r\n",
+					"    print(f'Exporting data for {start_date.year} Q{quarter_number} ({start_date:%Y-%m-%d} : {end_date:%Y-%m-%d}) ...')\r\n",
+					"\r\n",
+					"    storage_path_csv = f'abfss://wwi@asadatalaket20210731.dfs.core.windows.net/factsale-csv/{start_date.year}/Q{quarter_number}'\r\n",
+					"\r\n",
+					"    wwi_sales \\\r\n",
+					"        .where((wwi_sales['InvoiceDateKey'] >= f'{start_date:%Y-%m-%d}') & (wwi_sales['InvoiceDateKey'] <= f'{end_date:%Y-%m-%d}')) \\\r\n",
+					"        .write \\\r\n",
+					"        .partitionBy('InvoiceDateKey') \\\r\n",
+					"        .mode(\"overwrite\") \\\r\n",
+					"        .option(\"quote\", \"\\u0000\") \\\r\n",
+					"        .option(\"sep\",\"|\") \\\r\n",
+					"        .csv(storage_path_csv, header=True)\r\n",
+					"\r\n",
+					"    start_date = end_date + relativedelta(days=1)"
+				],
+				"execution_count": 5
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Export WWI sales data to Delta Lake"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"from pyspark.sql import functions as fn\r\n",
+					"quarters = 20\r\n",
+					"start_date = datetime(2012, 1, 1)\r\n",
+					"\r\n",
+					"wwi_sales2 = wwi_sales \\\r\n",
+					"        .withColumn(\"InvoiceYear\", fn.year(wwi_sales['InvoiceDateKey'])) \\\r\n",
+					"        .withColumn(\"InvoiceQuarter\", fn.quarter(wwi_sales['InvoiceDateKey'])) \\\r\n",
+					"\r\n",
+					"for quarter in np.arange(1, quarters + 1):\r\n",
+					"\r\n",
+					"    quarter_number = 4 if quarter % 4 == 0 else quarter % 4\r\n",
+					"    end_date = start_date + relativedelta(months=3) + relativedelta(days=-1)\r\n",
+					"    \r\n",
+					"    print(f'Exporting data for {start_date.year} Q{quarter_number} ({start_date:%Y-%m-%d} : {end_date:%Y-%m-%d}) ...')\r\n",
+					"\r\n",
+					"    storage_path_delta = f'abfss://wwi@asadatalaket20210731.dfs.core.windows.net/factsale-deltalake'\r\n",
+					"\r\n",
+					"    wwi_sales2 \\\r\n",
+					"        .where((wwi_sales['InvoiceDateKey'] >= f'{start_date:%Y-%m-%d}') & (wwi_sales['InvoiceDateKey'] <= f'{end_date:%Y-%m-%d}')) \\\r\n",
+					"        .write \\\r\n",
+					"        .format(\"delta\") \\\r\n",
+					"        .partitionBy('InvoiceYear', 'InvoiceQuarter', 'InvoiceDateKey') \\\r\n",
+					"        .mode(\"append\") \\\r\n",
+					"        .save(storage_path_delta)\r\n",
+					"\r\n",
+					"    start_date = end_date + relativedelta(days=1)"
+				],
+				"execution_count": 6
+			}
+		]
+	}
+}

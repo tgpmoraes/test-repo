@@ -1,0 +1,45 @@
+{
+	"name": "stgMovieActors",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlpool01",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OpenHack"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "actorid",
+				"type": "varchar"
+			},
+			{
+				"name": "actor",
+				"type": "varchar"
+			},
+			{
+				"name": "movieid",
+				"type": "varchar"
+			},
+			{
+				"name": "movietitle",
+				"type": "varchar"
+			},
+			{
+				"name": "genre",
+				"type": "varchar"
+			},
+			{
+				"name": "rating",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "movieactors"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

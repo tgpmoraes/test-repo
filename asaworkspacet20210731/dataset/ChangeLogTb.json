@@ -1,0 +1,54 @@
+{
+	"name": "ChangeLogTb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlpool01",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OpenHack"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "LogId",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "DatabaseName",
+				"type": "varchar"
+			},
+			{
+				"name": "EventType",
+				"type": "varchar"
+			},
+			{
+				"name": "ObjectName",
+				"type": "varchar"
+			},
+			{
+				"name": "ObjectType",
+				"type": "varchar"
+			},
+			{
+				"name": "SqlCommand",
+				"type": "varchar"
+			},
+			{
+				"name": "EventDate",
+				"type": "time",
+				"scale": 7
+			},
+			{
+				"name": "LoginName",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "PRD",
+			"table": "ChangeLog"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

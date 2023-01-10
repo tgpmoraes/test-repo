@@ -1,0 +1,719 @@
+{
+	"name": "catalog_transformation",
+	"properties": {
+		"folder": {
+			"name": "OpenHack"
+		},
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "SparkPool04",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "0113625a-2eee-4845-a38e-2cdfb5d9c6c2"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1",
+				"state": {
+					"90b47f60-948b-4196-90c2-ddc62cf9b2c3": {
+						"type": "Synapse.DataFrame",
+						"sync_state": {
+							"table": {
+								"rows": [
+									{
+										"0": "attachments/",
+										"1": "\"310015ed-0000-1000-0000-6165c5050000\"",
+										"2": "NPwfAPISmhABAAAAAAAAAA==",
+										"3": "dbs/NPwfAA==/colls/NPwfAPISmhA=/docs/NPwfAPISmhABAAAAAAAAAA==/",
+										"4": "1634059525",
+										"5": [
+											{
+												"name": "Eric Ray"
+											},
+											{
+												"name": "Danielle Busey"
+											},
+											{
+												"name": "Priscilla Wayne"
+											}
+										],
+										"6": "2017-03-14 00:00:00",
+										"7": "Science Fiction",
+										"8": "9248bacc-4d5c-4758-a250-4002bd645482",
+										"9": "PG-13",
+										"10": "1935",
+										"11": "162",
+										"12": "2017-06-06 00:00:00",
+										"13": "1",
+										"14": "Happy Theater"
+									},
+									{
+										"0": "attachments/",
+										"1": "\"310017ed-0000-1000-0000-6165c5050000\"",
+										"2": "NPwfAPISmhACAAAAAAAAAA==",
+										"3": "dbs/NPwfAA==/colls/NPwfAPISmhA=/docs/NPwfAPISmhACAAAAAAAAAA==/",
+										"4": "1634059525",
+										"5": [
+											{
+												"name": "Jack Smith"
+											},
+											{
+												"name": "Freida Pine"
+											}
+										],
+										"6": "2017-01-31 00:00:00",
+										"7": "Romance",
+										"8": "10adb54b-ac9c-4a8b-a921-f9bd8ecb3988",
+										"9": "R",
+										"10": "1965",
+										"11": "100",
+										"12": "2017-03-28 00:00:00",
+										"13": "2",
+										"14": "The Theater of Adventure"
+									},
+									{
+										"0": "attachments/",
+										"1": "\"310019ed-0000-1000-0000-6165c5060000\"",
+										"2": "NPwfAPISmhADAAAAAAAAAA==",
+										"3": "dbs/NPwfAA==/colls/NPwfAPISmhA=/docs/NPwfAPISmhADAAAAAAAAAA==/",
+										"4": "1634059526",
+										"5": [
+											{
+												"name": "Thomas Carter"
+											},
+											{
+												"name": "Eric Smith"
+											}
+										],
+										"6": "2018-05-22 00:00:00",
+										"7": "Action/Adventure",
+										"8": "ee607719-e868-4d21-bead-54d796d8fec0",
+										"9": "R",
+										"10": "1921",
+										"11": "143",
+										"12": "2018-07-17 00:00:00",
+										"13": "2",
+										"14": "The Book of Intrigue"
+									},
+									{
+										"0": "attachments/",
+										"1": "\"31001aed-0000-1000-0000-6165c5060000\"",
+										"2": "NPwfAPISmhAEAAAAAAAAAA==",
+										"3": "dbs/NPwfAA==/colls/NPwfAPISmhA=/docs/NPwfAPISmhAEAAAAAAAAAA==/",
+										"4": "1634059526",
+										"5": [
+											{
+												"name": "Peter Smith"
+											},
+											{
+												"name": "Madeline Adams"
+											}
+										],
+										"6": "2017-06-20 00:00:00",
+										"7": "Action/Adventure",
+										"8": "891f601a-cb5b-4141-8915-b76fb50f8207",
+										"9": "R",
+										"10": "1961",
+										"11": "111",
+										"12": "2017-09-12 00:00:00",
+										"13": "1",
+										"14": "Western Intrigue"
+									},
+									{
+										"0": "attachments/",
+										"1": "\"31001ced-0000-1000-0000-6165c5060000\"",
+										"2": "NPwfAPISmhAFAAAAAAAAAA==",
+										"3": "dbs/NPwfAA==/colls/NPwfAPISmhA=/docs/NPwfAPISmhAFAAAAAAAAAA==/",
+										"4": "1634059526",
+										"5": [
+											{
+												"name": "Henrietta Norris"
+											},
+											{
+												"name": "Freida Ray"
+											},
+											{
+												"name": "Henrietta Adams"
+											}
+										],
+										"6": "2018-01-09 00:00:00",
+										"7": "Romance",
+										"8": "7cbc95b9-772a-45de-b930-e918c16b3b00",
+										"9": "PG-13",
+										"10": "1929",
+										"11": "96",
+										"12": "2018-03-06 00:00:00",
+										"13": "2",
+										"14": "The Thread of Adventure"
+									},
+									{
+										"0": "attachments/",
+										"1": "\"31001eed-0000-1000-0000-6165c5060000\"",
+										"2": "NPwfAPISmhAGAAAAAAAAAA==",
+										"3": "dbs/NPwfAA==/colls/NPwfAPISmhA=/docs/NPwfAPISmhAGAAAAAAAAAA==/",
+										"4": "1634059526",
+										"5": [
+											{
+												"name": "Mark Morris"
+											},
+											{
+												"name": "Bill Morris"
+											}
+										],
+										"6": "2017-07-18 00:00:00",
+										"7": "Comedy",
+										"8": "cc74458d-6f09-428b-9d86-b26d8de4fa41",
+										"9": "PG",
+										"10": "1966",
+										"11": "96",
+										"12": "2017-09-12 00:00:00",
+										"13": "2",
+										"14": "The Thread of Fate"
+									},
+									{
+										"0": "attachments/",
+										"1": "\"31001fed-0000-1000-0000-6165c5060000\"",
+										"2": "NPwfAPISmhAHAAAAAAAAAA==",
+										"3": "dbs/NPwfAA==/colls/NPwfAPISmhA=/docs/NPwfAPISmhAHAAAAAAAAAA==/",
+										"4": "1634059526",
+										"5": [
+											{
+												"name": "Les Adams"
+											},
+											{
+												"name": "Priscilla Busey"
+											},
+											{
+												"name": "Frank Wayne"
+											}
+										],
+										"6": "2017-01-31 00:00:00",
+										"7": "Romance",
+										"8": "c72e72ee-a397-461c-acfe-97b492809c5f",
+										"9": "R",
+										"10": "1903",
+										"11": "90",
+										"12": "2017-03-28 00:00:00",
+										"13": "2",
+										"14": "Flying Fate"
+									},
+									{
+										"0": "attachments/",
+										"1": "\"310021ed-0000-1000-0000-6165c5060000\"",
+										"2": "NPwfAPISmhAIAAAAAAAAAA==",
+										"3": "dbs/NPwfAA==/colls/NPwfAPISmhA=/docs/NPwfAPISmhAIAAAAAAAAAA==/",
+										"4": "1634059526",
+										"5": [
+											{
+												"name": "Eric Ray"
+											},
+											{
+												"name": "Elise Jones"
+											},
+											{
+												"name": "Eric Smith"
+											}
+										],
+										"6": "2017-07-11 00:00:00",
+										"7": "Action/Adventure",
+										"8": "13c4c28e-5523-4f1f-a506-1541155c6897",
+										"9": "R",
+										"10": "2000",
+										"11": "152",
+										"12": "2017-09-05 00:00:00",
+										"13": "2",
+										"14": "The House of Ice"
+									},
+									{
+										"0": "attachments/",
+										"1": "\"310023ed-0000-1000-0000-6165c5060000\"",
+										"2": "NPwfAPISmhAJAAAAAAAAAA==",
+										"3": "dbs/NPwfAA==/colls/NPwfAPISmhA=/docs/NPwfAPISmhAJAAAAAAAAAA==/",
+										"4": "1634059526",
+										"5": [
+											{
+												"name": "Jill Adams"
+											},
+											{
+												"name": "Bill Wayne"
+											},
+											{
+												"name": "Priscilla Adams"
+											}
+										],
+										"6": "2017-02-14 00:00:00",
+										"7": "Family",
+										"8": "0a920005-8a52-45aa-957e-7023a95b6ebf",
+										"9": "PG",
+										"10": "1980",
+										"11": "72",
+										"12": "2017-04-11 00:00:00",
+										"13": "2",
+										"14": "Frozen Garden"
+									},
+									{
+										"0": "attachments/",
+										"1": "\"310026ed-0000-1000-0000-6165c5060000\"",
+										"2": "NPwfAPISmhAKAAAAAAAAAA==",
+										"3": "dbs/NPwfAA==/colls/NPwfAPISmhA=/docs/NPwfAPISmhAKAAAAAAAAAA==/",
+										"4": "1634059526",
+										"5": [
+											{
+												"name": "Thomas Norris"
+											},
+											{
+												"name": "Eric Busey"
+											},
+											{
+												"name": "Eric Davis"
+											}
+										],
+										"6": "2017-08-15 00:00:00",
+										"7": "Romance",
+										"8": "b7b30d5f-f219-4941-b534-7d8f7c88bc3d",
+										"9": "PG",
+										"10": "2001",
+										"11": "94",
+										"12": "2017-10-10 00:00:00",
+										"13": "2",
+										"14": "Space Case"
+									}
+								],
+								"schema": [
+									{
+										"key": "0",
+										"name": "_attachments",
+										"type": "string"
+									},
+									{
+										"key": "1",
+										"name": "_etag",
+										"type": "string"
+									},
+									{
+										"key": "2",
+										"name": "_rid",
+										"type": "string"
+									},
+									{
+										"key": "3",
+										"name": "_self",
+										"type": "string"
+									},
+									{
+										"key": "4",
+										"name": "_ts",
+										"type": "bigint"
+									},
+									{
+										"key": "5",
+										"name": "actors",
+										"type": "ArrayType(StructType(StructField(name,StringType,true)),true)"
+									},
+									{
+										"key": "6",
+										"name": "availabilityDate",
+										"type": "string"
+									},
+									{
+										"key": "7",
+										"name": "genre",
+										"type": "string"
+									},
+									{
+										"key": "8",
+										"name": "id",
+										"type": "string"
+									},
+									{
+										"key": "9",
+										"name": "rating",
+										"type": "string"
+									},
+									{
+										"key": "10",
+										"name": "releaseYear",
+										"type": "bigint"
+									},
+									{
+										"key": "11",
+										"name": "runtime",
+										"type": "bigint"
+									},
+									{
+										"key": "12",
+										"name": "streamingAvailabilityDate",
+										"type": "string"
+									},
+									{
+										"key": "13",
+										"name": "tier",
+										"type": "bigint"
+									},
+									{
+										"key": "14",
+										"name": "title",
+										"type": "string"
+									}
+								]
+							},
+							"isSummary": false,
+							"language": "scala"
+						},
+						"persist_state": {
+							"view": {
+								"type": "details",
+								"chartOptions": {
+									"chartType": "bar",
+									"aggregationType": "sum",
+									"categoryFieldKeys": [
+										"0"
+									],
+									"seriesFieldKeys": [
+										"4"
+									],
+									"isStacked": false
+								}
+							}
+						}
+					}
+				}
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/fbf033a1-3ebb-4140-bb7f-b406cf96c1b7/resourceGroups/data-engineering-synapse/providers/Microsoft.Synapse/workspaces/asaworkspacet20210731/bigDataPools/SparkPool04",
+				"name": "SparkPool04",
+				"type": "Spark",
+				"endpoint": "https://asaworkspacet20210731.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SparkPool04",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net",
+					"authHeader": null
+				},
+				"sparkVersion": "3.2",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"microsoft": {
+						"language": "python"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%pyspark\r\n",
+					"df = spark.read.load('abfss://wwi-02@asadatalaket20210731.dfs.core.windows.net/openhack/raw/CosmosDB/Movies/data_4b70290a-e57c-48c0-bdfb-713fa197f1d4_72dc77d0-50bb-4476-8d63-31bdde68740d.json', format='json')\r\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": 1
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df.printSchema()"
+				],
+				"execution_count": 2
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"from pyspark.sql.functions import udf, explode\r\n",
+					"\r\n",
+					"flat=df.select(explode('actors').alias('actors_flat'), 'availabilityDate', 'genre', 'rating', 'releaseYear', 'streamingAvailabilityDate', 'tier', 'title')\r\n",
+					"flat.show(100)"
+				],
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"catalog = (flat.select('actors_flat.name', 'availabilityDate', 'genre', 'rating', 'releaseYear', 'streamingAvailabilityDate', 'tier', 'title'))\r\n",
+					"\r\n",
+					"catalog.show(100)"
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"catalog = catalog.withColumnRenamed(\"availabilityDate\", \"ReleaseDate\") \\\r\n",
+					"                 .withColumnRenamed(\"releaseYear\", \"AvailabilityYear\") \\\r\n",
+					"                 .withColumnRenamed(\"StreamingAvailabilityDate\", \"AvailabilityDate\") \\\r\n",
+					"                 .withColumnRenamed(\"tier\", \"MovieTier\") \\\r\n",
+					"                 .withColumnRenamed(\"title\", \"MovieTitle\") \\\r\n",
+					"                 .withColumnRenamed(\"name\", \"Actor\")\r\n",
+					"\r\n",
+					"catalog.printSchema()"
+				],
+				"execution_count": 5
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"import uuid\r\n",
+					"import pyspark.sql.functions as f\r\n",
+					"\r\n",
+					"\r\n",
+					"catalog = catalog.withColumn(\"SourceID\", f.lit(1)) \\\r\n",
+					"                 .withColumn(\"CatalogID\", f.expr(\"uuid()\")) \\\r\n",
+					"                 .withColumn(\"ActorID\", f.lit('')) \\\r\n",
+					"                 .withColumn(\"MovieID\", f.lit('')) \\\r\n",
+					"                 .withColumn(\"ReleaseDate\", f.to_timestamp(f.col(\"ReleaseDate\"),\"yyyy-MM-dd HH:mm:ss\")) \\\r\n",
+					"                 .withColumn(\"AvailabilityDate\", f.to_timestamp(f.col(\"AvailabilityDate\"),\"yyyy-MM-dd HH:mm:ss\")) \\\r\n",
+					"                 .withColumn(\"AvailabilityYear\", f.col(\"AvailabilityYear\").cast(\"Integer\")) \\\r\n",
+					"                 .withColumn(\"MovieTier\", f.col(\"MovieTier\").cast(\"Integer\"))\r\n",
+					"\r\n",
+					"catalog.printSchema()"
+				],
+				"execution_count": 6
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"catalog.write.parquet('abfss://wwi-02@asadatalaket20210731.dfs.core.windows.net/openhack/EXT/southridge_catalog.parquet')"
+				],
+				"execution_count": 7
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					"df = spark.read.load('abfss://wwi-02@asadatalaket20210731.dfs.core.windows.net/openhack/raw/VanArsdelLtd/dboActors.csv', format='csv'\r\n",
+					"## If header exists uncomment line below\r\n",
+					"##, header=True\r\n",
+					")\r\n",
+					"va_actors = df.withColumnRenamed(\"_c0\", \"ActorID\") \\\r\n",
+					"              .withColumnRenamed(\"_c1\", \"ActorName\") \\\r\n",
+					"              .drop(\"_c2\")\r\n",
+					"\r\n",
+					"va_actors.printSchema()"
+				],
+				"execution_count": 8
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df = spark.read.load('abfss://wwi-02@asadatalaket20210731.dfs.core.windows.net/openhack/raw/VanArsdelLtd/dboMovies.csv', format='csv'\r\n",
+					"## If header exists uncomment line below\r\n",
+					"##, header=True\r\n",
+					")\r\n",
+					"va_movies = df.withColumnRenamed(\"_c3\", \"Rating\") \\\r\n",
+					"              .withColumnRenamed(\"_c5\", \"ReleaseDate\") \\\r\n",
+					"              .withColumnRenamed(\"_c1\", \"MovieTitle\") \\\r\n",
+					"              .withColumnRenamed(\"_c0\", \"MovieID\") \\\r\n",
+					"              .drop(\"_c2\") \\\r\n",
+					"              .drop(\"_c4\") \\\r\n",
+					"\r\n",
+					"va_movies.show(10)"
+				],
+				"execution_count": 9
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"va_movies = va_movies.withColumn(\"ReleaseDate\", f.to_date(f.col(\"ReleaseDate\"),\"MM-dd-yyyy\")) \\\r\n",
+					"                     .withColumn(\"AvailabilityYear\", f.year(f.col(\"ReleaseDate\"))) \\\r\n",
+					"                     .withColumn(\"AvailabilityDate\", f.col(\"ReleaseDate\")) \\\r\n",
+					"                     .withColumn(\"SourceID\", f.lit(2)) \\\r\n",
+					"                     .withColumn(\"CatalogID\", f.expr(\"uuid()\"))\r\n",
+					"\r\n",
+					"va_movies.show(10)"
+				],
+				"execution_count": 10
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"df = spark.read.load('abfss://wwi-02@asadatalaket20210731.dfs.core.windows.net/openhack/raw/VanArsdelLtd/dboMovieActors.csv', format='csv'\r\n",
+					"## If header exists uncomment line below\r\n",
+					"##, header=True\r\n",
+					")\r\n",
+					"\r\n",
+					"va_movieActors = df.withColumnRenamed(\"_c1\", \"MovieID\") \\\r\n",
+					"                   .withColumnRenamed(\"_c2\", \"ActorID\") \\\r\n",
+					"                   .drop(\"_c0\")\r\n",
+					"\r\n",
+					"va_movieActors.printSchema()"
+				],
+				"execution_count": 11
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"va_catalog = va_movieActors.join(va_movies, on=\"MovieID\") \\\r\n",
+					"                           .join(va_actors, on=\"ActorID\")\r\n",
+					"\r\n",
+					"va_catalog.printSchema()"
+				],
+				"execution_count": 12
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"va_catalog.write.parquet('abfss://wwi-02@asadatalaket20210731.dfs.core.windows.net/openhack/EXT/vanarsdel_catalog.parquet')"
+				],
+				"execution_count": 13
+			}
+		]
+	}
+}

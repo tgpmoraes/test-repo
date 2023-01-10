@@ -1,0 +1,26 @@
+{
+	"name": "AzureDataExplorer1",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDataExplorer",
+		"typeProperties": {
+			"endpoint": "https://asadaxt20210731.asaworkspacet20210731.kusto.azuresynapse.net",
+			"tenant": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+			"servicePrincipalId": "8e8fa944-beb8-4f11-968e-ea0228bf30e3",
+			"servicePrincipalKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "asakeyvaultt20210731",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "purview-spn-app-clientsecret"
+			},
+			"database": "Sales"
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

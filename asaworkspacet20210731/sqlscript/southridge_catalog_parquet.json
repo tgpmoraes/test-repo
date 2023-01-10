@@ -1,0 +1,20 @@
+{
+	"name": "southridge_catalog_parquet",
+	"properties": {
+		"folder": {
+			"name": "OpenHack"
+		},
+		"content": {
+			"query": "CREATE EXTERNAL TABLE [EXT].[SOUTHRIDGE_CATALOG] (\n\t[Actor] varchar(8000),\n\t[ReleaseDate] datetime2(7),\n\t[genre] varchar(8000),\n\t[rating] varchar(8000),\n\t[AvailabilityYear] int,\n\t[AvailabilityDate] datetime2(7),\n\t[MovieTier] int,\n\t[MovieTitle] varchar(8000),\n\t[SourceID] int,\n\t[CatalogID] varchar(8000),\n\t[ActorID] varchar(8000),\n\t[MovieID] varchar(8000)\n\t)\n\tWITH (\n\tLOCATION = 'openhack/EXT/southridge_catalog.parquet/part-00000-ed3f0a13-cf0e-4d83-85db-0be5fdf04aea-c000.snappy.parquet',\n\tDATA_SOURCE = [wwi-02_asadatalaket20210731_dfs_core_windows_net],\n\tFILE_FORMAT = [ParquetFormat]\n\t)\nGO\n\nCREATE TABLE [STG].[SOUTHRIDGE_CATALOG]\nWITH\n(\n DISTRIBUTION = ROUND_ROBIN\n ,HEAP\n)\nAS\nSELECT\n\t[SourceID],\n\t[CatalogID],\n\t[ActorID],\n\t[Actor],\n\tCAST([ReleaseDate] AS DATETIME2) AS [ReleaseDate],\n\t[genre] AS [Genre],\n\t[rating] AS [Rating],\n\t[AvailabilityYear],\n\tCAST([AvailabilityDate] AS DATETIME2) AS [AvailabilityDate],\n\t[MovieTier],\n\t[MovieTitle],\n\t[MovieID]\nFROM [EXT].[SOUTHRIDGE_CATALOG]\nGO\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "SQLPool01",
+				"poolName": "SQLPool01"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"name": "ASAL400 - Lab3 - Ex1",
+	"properties": {
+		"content": {
+			"query": "SELECT  \n    COUNT_BIG(*)\nFROM\n    [wwi_perf].[Sale_Heap]\nGO\n\nSELECT TOP 1000 * FROM\n(\n    SELECT\n        S.CustomerId\n        ,SUM(S.TotalAmount) as TotalAmount\n    FROM\n        [wwi_perf].[Sale_Heap] S\n    GROUP BY\n        S.CustomerId\n) T\nOPTION (LABEL = 'Lab03: Heap')\nGO\n\nSELECT  *\nFROM    sys.dm_pdw_exec_requests\nWHERE   [label] = 'Lab03: Heap';\nGO\n\nEXPLAIN WITH_RECOMMENDATIONS\nSELECT TOP 1000 * FROM\n(\n    SELECT\n        S.CustomerId\n        ,SUM(S.TotalAmount) as TotalAmount\n    FROM\n        [wwi_perf].[Sale_Heap] S\n    GROUP BY\n        S.CustomerId\n) T\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "SQLPool01",
+				"poolName": "SQLPool01"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

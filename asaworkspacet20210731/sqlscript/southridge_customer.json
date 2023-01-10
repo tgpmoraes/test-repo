@@ -1,0 +1,20 @@
+{
+	"name": "southridge_customer",
+	"properties": {
+		"folder": {
+			"name": "OpenHack"
+		},
+		"content": {
+			"query": "CREATE EXTERNAL TABLE [EXT].[SOUTHRIDGE_CUSTOMERS] (\n\t[CustomerID] varchar(8000),\n\t[LastName] varchar(8000),\n\t[FirstName] varchar(8000),\n\t[PhoneNumber] varchar(8000),\n\t[CreatedDate] date,\n\t[UpdatedDate] date\n\t)\n\tWITH (\n\tLOCATION = 'raw/CloudSales/dboCustomers.parquet',\n\tDATA_SOURCE = [bronze_southridgesa8_dfs_core_windows_net2],\n\tFILE_FORMAT = [SynapseParquetFormat]\n\t)\nGO\n\nCREATE TABLE [STG].[CUSTOMER]\nWITH\n(\n DISTRIBUTION = ROUND_ROBIN\n ,HEAP\n)\nAS\nSELECT\n\t[CustomerID],\n\t[LastName],\n\t[FirstName],\n\t[PhoneNumber],\n\tCAST([CreatedDate] AS DATETIME2) AS [CreatedDate],\n\tCAST([UpdatedDate] AS DATETIME2) AS [UpdatedDate],\n\t1 AS [SourceID],\n\tCONCAT('1', [CustomerID]) AS [UniqueID]\nFROM [EXT].[SOUTHRIDGE_CUSTOMERS]\nGO\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

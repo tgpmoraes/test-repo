@@ -1,0 +1,20 @@
+{
+	"name": "southridge_address",
+	"properties": {
+		"folder": {
+			"name": "OpenHack"
+		},
+		"content": {
+			"query": "CREATE EXTERNAL TABLE [EXT].[SOUTHRIDGE_ADDRESSES] (\n\t[AddressID] varchar(8000),\n\t[CustomerID] varchar(8000),\n\t[AddressLine1] varchar(8000),\n\t[AddressLine2] varchar(8000),\n\t[City] varchar(8000),\n\t[State] varchar(8000),\n\t[ZipCode] varchar(8000),\n\t[CreatedDate] date,\n\t[UpdatedDate] date\n\t)\n\tWITH (\n\tLOCATION = 'raw/CloudSales/dboAddresses.parquet',\n\tDATA_SOURCE = [bronze_southridgesa8_dfs_core_windows_net2],\n\tFILE_FORMAT = [SynapseParquetFormat]\n\t)\nGO\n\nCREATE TABLE [STG].[ADDRESS]\nWITH\n(\n DISTRIBUTION = ROUND_ROBIN\n ,HEAP\n)\nAS\nSELECT\n    1 AS [SourceID],\n    CONCAT('1', [CustomerID]) AS [UniqueID],\n    '' AS [AddressID],\n    [CustomerID],\n    [AddressLine1],\n    [AddressLine2],\n    [City],\n\t[State],\n\t[ZipCode],\n\tCAST([CreatedDate] AS DATETIME2) AS [CreatedDate],\n\tCAST([UpdatedDate] AS DATETIME2) AS [UpdatedDate]\nFROM [EXT].[SOUTHRIDGE_ADDRESSES]\nGO\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

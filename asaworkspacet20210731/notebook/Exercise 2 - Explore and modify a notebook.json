@@ -1,0 +1,168 @@
+{
+	"name": "Exercise 2 - Explore and modify a notebook",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "SparkPool04",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "9805db6b-038e-4f2b-b6c0-07f70be1cbf0"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/fbf033a1-3ebb-4140-bb7f-b406cf96c1b7/resourceGroups/data-engineering-synapse/providers/Microsoft.Synapse/workspaces/asaworkspacet20210731/bigDataPools/SparkPool04",
+				"name": "SparkPool04",
+				"type": "Spark",
+				"endpoint": "https://asaworkspacet20210731.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SparkPool04",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net",
+					"authHeader": null
+				},
+				"sparkVersion": "3.2",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"microsoft": {
+						"language": "scala"
+					}
+				},
+				"source": [
+					"%%spark\r\n",
+					"\r\n",
+					"// Set the path to read the WWI Sales files\r\n",
+					"import org.apache.spark.sql.SparkSession\r\n",
+					"\r\n",
+					"// Set the path to the ADLS Gen2 account\r\n",
+					"val adlsPath = \"abfss://wwi@asadatalaket20210731.dfs.core.windows.net\""
+				],
+				"execution_count": 1
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "scala"
+					}
+				},
+				"source": [
+					"%%spark\r\n",
+					"\r\n",
+					"// Read the sales into a dataframe\r\n",
+					"val sales = spark.read.format(\"csv\").option(\"header\", \"true\").option(\"inferSchema\", \"true\").option(\"sep\", \"|\").load(s\"$adlsPath/factsale-csv/2012/Q4\")\r\n",
+					"sales.show(5)\r\n",
+					"sales.printSchema()"
+				],
+				"execution_count": 2
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "scala"
+					}
+				},
+				"source": [
+					"%%spark\r\n",
+					"\r\n",
+					"spark.version"
+				],
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "scala"
+					}
+				},
+				"source": [
+					"%%spark\r\n",
+					"// https://docs.microsoft.com/en-us/azure/synapse-analytics/spark/synapse-spark-sql-pool-import-export\r\n",
+					"// Import libraries for the SQL Analytics connector\r\n",
+					"import org.apache.spark.sql.DataFrame\r\n",
+					"import org.apache.spark.sql.SaveMode\r\n",
+					"import com.microsoft.spark.sqlanalytics.utils.Constants\r\n",
+					"import org.apache.spark.sql.SqlAnalyticsConnector._\r\n",
+					"\r\n",
+					"val writeOptionsWithAADAuth:Map[String, String] = Map(Constants.SERVER -> \"asaworkspacet20210731.sql.azuresynapse.net\",\r\n",
+					"                                            Constants.TEMP_FOLDER -> \"abfss://wwi@asadatalaket20210731.dfs.core.windows.net/staging/temp\")\r\n",
+					"\r\n",
+					"// Write the retrieved sales data into a staging table in Azure Synapse Analytics.\r\n",
+					"sales.limit(10000).\r\n",
+					"    write.\r\n",
+					"    //Configure required configurations.\r\n",
+					"    options(writeOptionsWithAADAuth).\r\n",
+					"    //Choose a save mode that is apt for your use case.\r\n",
+					"    mode(SaveMode.Overwrite).\r\n",
+					"    synapsesql(tableName = \"SQLPool01.wwi_staging.Sale\", \r\n",
+					"                //For external table type value is Constants.EXTERNAL\r\n",
+					"                tableType = Constants.INTERNAL, \r\n",
+					"                //Optional parameter that is used to specify external table's base folder; defaults to `database_name/schema_name/table_name`\r\n",
+					"                location = None)"
+				],
+				"execution_count": 4
+			}
+		]
+	}
+}

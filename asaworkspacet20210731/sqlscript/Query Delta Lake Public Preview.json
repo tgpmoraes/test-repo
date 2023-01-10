@@ -1,0 +1,17 @@
+{
+	"name": "Query Delta Lake Public Preview",
+	"properties": {
+		"content": {
+			"query": "select top 10 *\nfrom openrowset(\n    bulk 'https://sqlondemandstorage.blob.core.windows.net/delta-lake/covid/',\n    format = 'delta') as rows",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

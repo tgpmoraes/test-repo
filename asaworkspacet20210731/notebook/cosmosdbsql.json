@@ -1,0 +1,430 @@
+{
+	"name": "cosmosdbsql",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "SparkPool04",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "6c2ed006-51de-4617-873b-5c4e48d77eb1"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1",
+				"state": {
+					"1dbb9905-dc09-46c2-a634-6c4fe2550fe3": {
+						"type": "Synapse.DataFrame",
+						"sync_state": {
+							"table": {
+								"rows": [
+									{
+										"0": "123",
+										"1": {
+											"customername": "Christy Zhu",
+											"customeremail": "christy12@adventure-works.com"
+										}
+									},
+									{
+										"0": "124",
+										"1": {
+											"customername": "Julio Ruiz",
+											"customeremail": "julio1@adventure-works.com"
+										}
+									},
+									{
+										"0": "125",
+										"1": {
+											"customername": "Emma Brown",
+											"customeremail": "emma3@adventure-works.com"
+										}
+									}
+								],
+								"schema": [
+									{
+										"key": "0",
+										"name": "customerid",
+										"type": "bigint"
+									},
+									{
+										"key": "1",
+										"name": "customerdetails",
+										"type": "StructType(StructField(customername,StringType,true), StructField(customeremail,StringType,true))"
+									}
+								],
+								"truncated": false
+							},
+							"isSummary": false,
+							"language": "scala"
+						},
+						"persist_state": {
+							"view": {
+								"type": "details",
+								"chartOptions": {
+									"chartType": "bar",
+									"aggregationType": "sum",
+									"categoryFieldKeys": [],
+									"seriesFieldKeys": [
+										"0"
+									],
+									"isStacked": false
+								}
+							}
+						}
+					},
+					"f6c5430a-611d-4642-92cf-cc08c7d8e6fc": {
+						"type": "Synapse.DataFrame",
+						"sync_state": {
+							"table": {
+								"rows": [
+									{
+										"0": "123",
+										"1": "Christy Zhu",
+										"2": "christy12@adventure-works.com"
+									},
+									{
+										"0": "124",
+										"1": "Julio Ruiz",
+										"2": "julio1@adventure-works.com"
+									},
+									{
+										"0": "125",
+										"1": "Emma Brown",
+										"2": "emma3@adventure-works.com"
+									}
+								],
+								"schema": [
+									{
+										"key": "0",
+										"name": "customerid",
+										"type": "bigint"
+									},
+									{
+										"key": "1",
+										"name": "c0",
+										"type": "string"
+									},
+									{
+										"key": "2",
+										"name": "c1",
+										"type": "string"
+									}
+								],
+								"truncated": false
+							},
+							"isSummary": false,
+							"language": "scala"
+						},
+						"persist_state": {
+							"view": {
+								"type": "details",
+								"chartOptions": {
+									"chartType": "bar",
+									"aggregationType": "sum",
+									"categoryFieldKeys": [
+										"1"
+									],
+									"seriesFieldKeys": [
+										"0"
+									],
+									"isStacked": false
+								}
+							}
+						}
+					},
+					"929d242f-577f-4bed-93cb-3254e8192ced": {
+						"type": "Synapse.DataFrame",
+						"sync_state": {
+							"table": {
+								"rows": [
+									{
+										"0": "TIthAJR3M20DAAAAAAAAAA==",
+										"1": "1656609878",
+										"2": "SO43707",
+										"3": "2019-07-02",
+										"4": "125",
+										"5": {
+											"customername": "Emma Brown",
+											"customeremail": "emma3@adventure-works.com"
+										},
+										"6": "Road-150 Red, 48",
+										"7": "1",
+										"8": "3578.27",
+										"9": "\"b50018fe-0000-0800-0000-62bddc560000\""
+									},
+									{
+										"0": "TIthAJR3M20BAAAAAAAAAA==",
+										"1": "1656609762",
+										"2": "SO43701",
+										"3": "2019-07-01",
+										"4": "123",
+										"5": {
+											"customername": "Christy Zhu",
+											"customeremail": "christy12@adventure-works.com"
+										},
+										"6": "Mountain-100 Silver, 44",
+										"7": "1",
+										"8": "3399.99",
+										"9": "\"b50010fe-0000-0800-0000-62bddbe20000\""
+									},
+									{
+										"0": "TIthAJR3M20CAAAAAAAAAA==",
+										"1": "1656609768",
+										"2": "SO43704",
+										"3": "2019-07-01",
+										"4": "124",
+										"5": {
+											"customername": "Julio Ruiz",
+											"customeremail": "julio1@adventure-works.com"
+										},
+										"6": "Mountain-100 Black, 48",
+										"7": "1",
+										"8": "3374.99",
+										"9": "\"b50011fe-0000-0800-0000-62bddbe80000\""
+									}
+								],
+								"schema": [
+									{
+										"key": "0",
+										"name": "_rid",
+										"type": "string"
+									},
+									{
+										"key": "1",
+										"name": "_ts",
+										"type": "bigint"
+									},
+									{
+										"key": "2",
+										"name": "id",
+										"type": "string"
+									},
+									{
+										"key": "3",
+										"name": "orderdate",
+										"type": "string"
+									},
+									{
+										"key": "4",
+										"name": "customerid",
+										"type": "bigint"
+									},
+									{
+										"key": "5",
+										"name": "customerdetails",
+										"type": "StructType(StructField(customername,StringType,true), StructField(customeremail,StringType,true))"
+									},
+									{
+										"key": "6",
+										"name": "product",
+										"type": "string"
+									},
+									{
+										"key": "7",
+										"name": "quantity",
+										"type": "bigint"
+									},
+									{
+										"key": "8",
+										"name": "price",
+										"type": "double"
+									},
+									{
+										"key": "9",
+										"name": "_etag",
+										"type": "string"
+									}
+								],
+								"truncated": false
+							},
+							"isSummary": false,
+							"language": "scala"
+						},
+						"persist_state": {
+							"view": {
+								"type": "details",
+								"chartOptions": {
+									"chartType": "bar",
+									"aggregationType": "sum",
+									"categoryFieldKeys": [
+										"0"
+									],
+									"seriesFieldKeys": [
+										"1"
+									],
+									"isStacked": false
+								}
+							}
+						}
+					}
+				}
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/fbf033a1-3ebb-4140-bb7f-b406cf96c1b7/resourceGroups/data-engineering-synapse/providers/Microsoft.Synapse/workspaces/asaworkspacet20210731/bigDataPools/SparkPool04",
+				"name": "SparkPool04",
+				"type": "Spark",
+				"endpoint": "https://asaworkspacet20210731.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SparkPool04",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net",
+					"authHeader": null
+				},
+				"sparkVersion": "3.2",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"collapsed": false
+				},
+				"source": [
+					"# Read from Cosmos DB analytical store into a Spark DataFrame and display 10 rows from the DataFrame\n",
+					"# To select a preferred list of regions in a multi-region Cosmos DB account, add .option(\"spark.cosmos.preferredRegions\", \"<Region1>,<Region2>\")\n",
+					"\n",
+					"df = spark.read\\\n",
+					"    .format(\"cosmos.olap\")\\\n",
+					"    .option(\"spark.synapse.linkedService\", \"AdventureWorksSQL\")\\\n",
+					"    .option(\"spark.cosmos.container\", \"Sales\")\\\n",
+					"    .load()\n",
+					"\n",
+					"display(df.limit(10))"
+				],
+				"execution_count": 5
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					" customer_df = df.select(\"customerid\", \"customerdetails\")\r\n",
+					" display(customer_df)"
+				],
+				"execution_count": 2
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": false
+				},
+				"source": [
+					" from pyspark.sql import functions as F\r\n",
+					"\r\n",
+					" custdetails_df = customer_df.select(\"customerid\",\r\n",
+					"     F.json_tuple(F.to_json(F.col(\"customerdetails\")),\"customername\", \"customeremail\"))\r\n",
+					"\r\n",
+					" display(custdetails_df)"
+				],
+				"execution_count": 3
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": false
+				},
+				"source": [
+					" %%sql\r\n",
+					"\r\n",
+					" -- Create a logical database in the Spark metastore\r\n",
+					" CREATE DATABASE salesdb;\r\n",
+					"\r\n",
+					" USE salesdb;\r\n",
+					"\r\n",
+					" -- Create a table from the Cosmos DB container\r\n",
+					" CREATE TABLE salesorders using cosmos.olap options (\r\n",
+					"     spark.synapse.linkedService 'AdventureWorksSQL',\r\n",
+					"     spark.cosmos.container 'Sales'\r\n",
+					" );\r\n",
+					"\r\n",
+					" -- Query the table\r\n",
+					" SELECT *\r\n",
+					" FROM salesorders;"
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"microsoft": {
+						"language": "sparksql"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%sql\r\n",
+					"\r\n",
+					"SELECT id, orderdate, customerdetails.customername, product\r\n",
+					"FROM salesorders\r\n",
+					"ORDER BY id;"
+				],
+				"execution_count": 7
+			}
+		]
+	}
+}

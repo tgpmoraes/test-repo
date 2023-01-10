@@ -1,0 +1,38 @@
+{
+	"name": "DimActors",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlpool01",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OpenHack"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "ActorSK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ActorID",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "ActorName",
+				"type": "varchar"
+			},
+			{
+				"name": "ActorGender",
+				"type": "char"
+			}
+		],
+		"typeProperties": {
+			"schema": "PRD",
+			"table": "DimActors"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

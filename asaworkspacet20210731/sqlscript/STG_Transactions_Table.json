@@ -1,0 +1,20 @@
+{
+	"name": "STG_Transactions_Table",
+	"properties": {
+		"folder": {
+			"name": "OpenHack"
+		},
+		"content": {
+			"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseParquetFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseParquetFormat] \n\tWITH ( FORMAT_TYPE = PARQUET)\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'bronze_southridgesa8_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [bronze_southridgesa8_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://bronze@southridgesa8.dfs.core.windows.net', \n\t\tTYPE = HADOOP \n\t)\nGO\n\n\nDrop External Table ext.Transactions\nGO\n\nCREATE EXTERNAL TABLE ext.Transactions (\n\t[TransactionID] varchar(8000),\n\t[CustomerID] varchar(8000),\n\t[MovieID] varchar(8000),\n\t[StreamStart] datetime2(7),\n\t[StreamEnd] datetime2(7),\n\t[CreatedDate] date,\n\t[UpdatedDate] date\n\t)\n\tWITH (\n\tLOCATION = 'raw/CloudStreaming/dboTransactions.parquet',\n\tDATA_SOURCE = [bronze_southridgesa8_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseParquetFormat]\n\t)\nGO\n\nSELECT TOP 100 * FROM ext.Transactions\nGO\n\nDrop Table [STG].[Transactions]\nGO\n\nCREATE TABLE [STG].[Transactions]\nWITH\n( DISTRIBUTION = ROUND_ROBIN, Heap  )\nAS\nSELECT  Top 100\n\t 1 as [SourceID]\n\t,Concat(1,[TransactionID]) as UniqueOrderID\n\t,[TransactionID] as [TransactionID]\n\t,Concat(1,[MovieID]) as UniqueMoiveID\n\t,[MovieID] as [MovieID]\n\t,[CustomerID] as [CustomerID]\n\t,concat(1, [CustomerID]) as UniqueCustomerID\n\t,[StreamStart] \n\t,[StreamEnd] \nFROM    [ext].[Transactions];\nGO\n\nSelect * \nFrom [STG].[Transactions]\n\n\n\n\n\n\n\n\n\n\n\n\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

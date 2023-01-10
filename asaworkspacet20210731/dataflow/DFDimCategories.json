@@ -1,0 +1,35 @@
+{
+	"name": "DFDimCategories",
+	"properties": {
+		"folder": {
+			"name": "OpenHack"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "stgCatalogCategories",
+						"type": "DatasetReference"
+					},
+					"name": "stgCatalogCategories"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DimCategories",
+						"type": "DatasetReference"
+					},
+					"name": "DimCategories"
+				}
+			],
+			"transformations": [
+				{
+					"name": "MovieCategorySK"
+				}
+			],
+			"script": "source(output(\n\t\tGenre as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tstaged: true) ~> stgCatalogCategories\nstgCatalogCategories keyGenerate(output(MovieCategorySK as long),\n\tstartAt: 1L,\n\tstepValue: 1L) ~> MovieCategorySK\nMovieCategorySK sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tMovieCategorySK as integer,\n\t\tMovieCategoryDescription as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tMovieCategorySK,\n\t\tMovieCategoryDescription = Genre\n\t)) ~> DimCategories"
+		}
+	}
+}

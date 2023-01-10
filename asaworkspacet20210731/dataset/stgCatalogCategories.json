@@ -1,0 +1,25 @@
+{
+	"name": "stgCatalogCategories",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlpool01",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OpenHack"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "Genre",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "STG",
+			"table": "categories"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

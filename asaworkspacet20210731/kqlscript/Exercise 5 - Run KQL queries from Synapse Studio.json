@@ -1,0 +1,16 @@
+{
+	"name": "Exercise 5 - Run KQL queries from Synapse Studio",
+	"properties": {
+		"content": {
+			"query": "SalesTelemetry\n| where Url startswith \"/product/search\"\n| take 1000",
+			"metadata": {
+				"language": "kql"
+			},
+			"currentConnection": {
+				"poolName": "asadaxt20210731",
+				"databaseName": "Sales"
+			}
+		},
+		"type": "KqlQuery"
+	}
+}

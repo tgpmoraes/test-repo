@@ -1,0 +1,38 @@
+{
+	"name": "asal400_wwi_userproductreviews_asa",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlpool01",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "UserId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ProductId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ReviewText",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ReviewDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "wwi",
+			"table": "UserProductReviews"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

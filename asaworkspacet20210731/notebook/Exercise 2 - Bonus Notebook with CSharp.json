@@ -1,0 +1,89 @@
+{
+	"name": "Exercise 2 - Bonus Notebook with CSharp",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "e9ba3ec8-e034-4d1d-b19d-c3b8ae96aecf"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "python"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"// Configure the connection to the data lake\n",
+					"var adlsPath = \"abfss://wwi@asadatalake495320.dfs.core.windows.net\";"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"// Import the sales data from the data lake\n",
+					"var sales = spark.Read().Option(\"header\", \"true\").Option(\"inferSchema\", \"true\").Option(\"sep\", \"|\").Csv($\"{adlsPath}/factsale-csv/2012/Q4\");\n",
+					"sales.Show(5);\n",
+					"sales.PrintSchema();"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"using System;\n",
+					"using System.Collections.Generic;\n",
+					"\n",
+					"// Set up a JDBC connection to Azure Synapse Analytics\n",
+					"var jdbcUsername = \"asa.sql.staging@asaworkspace495320\";\n",
+					"var jdbcPassword = \"password.1!!\";\n",
+					"var jdbcConnectionString = $\"jdbc:sqlserver://asaworkspace495320.sql.azuresynapse.net:1433;database=SQLPool01;\";\n",
+					"\n",
+					"// Set target table name\n",
+					"var tableName = $\"wwi_staging.Sale_CSharp\";\n",
+					"\n",
+					"// Write the retrieved sales data into a staging table in Azure Synapse Analytics.\n",
+					"sales\n",
+					"    .Limit(1500)\n",
+					"    .Write()\n",
+					"    .Format(\"jdbc\")\n",
+					"    .Options(\n",
+					"        new Dictionary<string, string>\n",
+					"        {\n",
+					"            {\"url\", jdbcConnectionString},\n",
+					"            {\"dbtable\", tableName},\n",
+					"            {\"user\", jdbcUsername},\n",
+					"            {\"password\", jdbcPassword},\n",
+					"            {\"encrypt\", \"false\"},\n",
+					"            {\"trustServerCertificate\", \"true\"},\n",
+					"            {\"createTableColumnTypes\", \"DeliveryDateKey VARCHAR(50), Description VARCHAR(100), Package VARCHAR(50)\"} // Override the column types for string values. They are assigned nvarchar(max) by default, and that is not compatible with columnstore index.\n",
+					"        }\n",
+					"    )\n",
+					"    .Mode(\"append\")\n",
+					"    .Save();"
+				]
+			}
+		]
+	}
+}

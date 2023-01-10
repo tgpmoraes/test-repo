@@ -1,0 +1,17 @@
+{
+	"name": "CLS Demo",
+	"properties": {
+		"content": {
+			"query": "SELECT TOP (100) [Region]\n,[Country]\n,[ProductCategory]\n,[CampaignName]\n,[Revenue]\n,[RevenueTarget]\n,[City]\n,[State]\n FROM [wwi].[CampaignAnalytics]\n\nSELECT Name as [User1] FROM sys.sysusers WHERE name = N'CEO';\nSELECT Name as [User2] FROM sys.sysusers WHERE name = N'DataAnalystMiami';\n\nREVOKE SELECT ON [wwi].[CampaignAnalytics] FROM DataAnalystMiami;\nGRANT SELECT ON [wwi].[CampaignAnalytics]([Region],[Country],[ProductCategory],[CampaignName],[RevenueTarget],[City],[State]) TO DataAnalystMiami;\n\nEXECUTE AS USER ='DataAnalystMiami';\nselect TOP 100 * from [wwi].[CampaignAnalytics];\n\nEXECUTE AS USER ='DataAnalystMiami';\nselect TOP 100 [Region],[Country],[ProductCategory],[CampaignName],[RevenueTarget],[City],[State] from [wwi].[CampaignAnalytics];\n\nRevert;\nGRANT SELECT ON wwi_security.Sale TO CEO;  --Full access to all columns.\n\nEXECUTE AS USER ='CEO'\nselect * from wwi_security.Sale\nRevert;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"name": "DimCustomer",
+	"properties": {
+		"folder": {
+			"name": "OpenHack"
+		},
+		"content": {
+			"query": "\nDrop Table [dbo].[DimCustomers]\nGO\n\nCREATE TABLE [dbo].[DimCustomers] (\n    [CustomerSK]      INT              NOT NULL,\n    [CustomerID]      UNIQUEIDENTIFIER NOT NULL,\n    [LastName]        VARCHAR (50)     NOT NULL,\n    [FirstName]       VARCHAR (30)     NOT NULL,\n    [AddressLine1]    VARCHAR (50)     NOT NULL,\n    [AddressLine2]    VARCHAR (50)     NULL,\n    [City]            VARCHAR (30)     NOT NULL,\n    [State]           CHAR (2)         NOT NULL,\n    [ZipCode]         CHAR (5)         NOT NULL,\n    [PhoneNumber]     CHAR (10)        NOT NULL,\n    [RecordStartDate] DATE             NOT NULL,\n    [RecordEndDate]   DATE             NULL,\n    [ActiveFlag]      BIT              NOT NULL\n)\nWITH (CLUSTERED COLUMNSTORE INDEX, DISTRIBUTION = HASH([CustomerSK]));\nGO\n\nInsert into dbo.Dimcustomers\nSELECT\n ROW_NUMBER() OVER(ORDER BY Cus.CustomerID ASC) AS CustomerSK\n,Cus.CustomerID\n,Cus.LastName\n,Cus.FirstName\n,Adr.Addressline1\n,Adr.Addressline2\n,Adr.City\n,Adr.State\n,Adr.ZipCode\n,Cus.PhoneNumber\n,Cast(Getdate() as DATE) as RecordStartDate\n,Cast(Getdate() as Date ) RecordEndDate\n,1 as ActiveFlag\n\nFrom STG.Customer Cus\n    Inner join STG.Address Adr \n    on Cus.CustomerID = Adr.CustomerID\nGO\n\nSelect *\nFrom dbo.DimCustomers\norder by CustomerSK\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

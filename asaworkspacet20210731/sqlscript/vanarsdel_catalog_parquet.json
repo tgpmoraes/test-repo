@@ -1,0 +1,20 @@
+{
+	"name": "vanarsdel_catalog_parquet",
+	"properties": {
+		"folder": {
+			"name": "OpenHack"
+		},
+		"content": {
+			"query": "select * from sys.database_scoped_credentials;\nselect * from sys.external_data_sources;\nselect * from sys.external_file_formats;\n\nCREATE DATABASE SCOPED CREDENTIAL msi_cred WITH IDENTITY = 'Managed Service Identity';\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'wwi-02_asadatalaket20210731_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [wwi-02_asadatalaket20210731_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://wwi-02@asadatalaket20210731.dfs.core.windows.net', \n\t\tTYPE = HADOOP, CREDENTIAL = msi_cred\n\t)\nGO\n\nCREATE EXTERNAL TABLE [EXT].[VANARSDEL_CATALOG] (\n\t[ActorID] varchar(8000),\n\t[MovieID] varchar(8000),\n\t[MovieTitle] varchar(8000),\n\t[Rating] varchar(8000),\n\t[ReleaseDate] date,\n\t[AvailabilityYear] int,\n\t[AvailabilityDate] date,\n\t[SourceID] int,\n\t[CatalogID] varchar(8000),\n\t[ActorName] varchar(8000)\n\t)\n\tWITH (\n\tLOCATION = 'openhack/EXT/vanarsdel_catalog.parquet/part-00000-ca2d2cb5-7204-4c91-9342-d02a9a9ffa70-c000.snappy.parquet',\n\tDATA_SOURCE = [wwi-02_asadatalaket20210731_dfs_core_windows_net],\n\tFILE_FORMAT = [ParquetFormat]\n\t)\nGO\n\nCREATE TABLE [STG].[VANARSDEL_CATALOG]\nWITH\n(\n DISTRIBUTION = ROUND_ROBIN\n ,HEAP\n)\nAS\nSELECT\n\t[SourceID],\n\t[CatalogID],\n\t[ActorID],\n\t[ActorName] AS [Actor],\n\tCAST([ReleaseDate] AS DATETIME2) AS [ReleaseDate],\n\t'' AS [Genre],\n\t'' AS [Rating],\n\t[AvailabilityYear],\n\tCAST([AvailabilityDate] AS DATETIME2) AS [AvailabilityDate],\n\t'' AS [MovieTier],\n\t[MovieTitle],\n\t[MovieID]\nFROM [EXT].[VANARSDEL_CATALOG]\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "SQLPool01",
+				"poolName": "SQLPool01"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

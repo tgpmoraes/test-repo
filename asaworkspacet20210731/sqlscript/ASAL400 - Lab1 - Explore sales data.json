@@ -1,0 +1,17 @@
+{
+	"name": "ASAL400 - Lab1 - Explore sales data",
+	"properties": {
+		"content": {
+			"query": "SELECT\n    COUNT_BIG(*)\nFROM\n    OPENROWSET(\n        BULK 'https://asadatalaket20210731.dfs.core.windows.net/wwi-02/sale-small/Year=2019/*/*/*/*',\n        FORMAT='PARQUET'\n    ) AS [r];\n",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

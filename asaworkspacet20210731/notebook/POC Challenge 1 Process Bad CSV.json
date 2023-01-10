@@ -1,0 +1,182 @@
+{
+	"name": "POC Challenge 1 Process Bad CSV",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "SparkPool04",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "b586101c-4c78-49a1-8336-557f5703f4e1"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/fbf033a1-3ebb-4140-bb7f-b406cf96c1b7/resourceGroups/data-engineering-synapse/providers/Microsoft.Synapse/workspaces/asaworkspacet20210731/bigDataPools/SparkPool04",
+				"name": "SparkPool04",
+				"type": "Spark",
+				"endpoint": "https://asaworkspacet20210731.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SparkPool04",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net",
+					"authHeader": null
+				},
+				"sparkVersion": "3.2",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"tags": [
+						"parameters"
+					]
+				},
+				"source": [
+					"filesource = 'sale-20170502.csv'"
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"from azure.storage.blob import BlobClient\r\n",
+					"\r\n",
+					"blob_url = f'https://asadatalaket20210731.blob.core.windows.net/wwi-02/sale-poc/{filesource}'\r\n",
+					"blob_key = '9Y3bYMx5kKHwsfE1eLY4hLPa+dIQySL2OCnIJk1tzi6DHX5PyCBZLn8Eqc+aFzxVuxF96RgpgBFu+yVE61R7CA=='\r\n",
+					"file_content = BlobClient.from_blob_url(blob_url, blob_key).download_blob().readall()"
+				],
+				"execution_count": 5
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"import numpy as np\r\n",
+					"# Experiment tokenizing until you figure out there's , all over the place:\\r\\n\",\r\n",
+					"\r\n",
+					"tokens = file_content.decode(\"iso8859\").split(',')\r\n",
+					"print(f'Found {len(tokens)} tokens in content.')"
+				],
+				"execution_count": 6
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Start looking for repeating patterns:\r\n",
+					"print([tokens[i] for i in np.arange(0, 10)])\r\n",
+					"print([tokens[i] for i in np.arange(0, 15)])\r\n",
+					"print([tokens[i] for i in np.arange(0, 20)])"
+				],
+				"execution_count": 7
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Build an array of arrays\r\n",
+					"row_list = []\r\n",
+					"max_index = 11\r\n",
+					"while max_index <= len(tokens):\r\n",
+					"    row = [tokens[i] for i in np.arange(max_index - 11, max_index)]\r\n",
+					"    row_list.append(row)\r\n",
+					"    max_index += 11"
+				],
+				"execution_count": 8
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"filedest = filesource[:-4] + '-fixed.csv'\r\n",
+					"# Create dataframe from array of arrays, save proper CSV, you're done.\r\n",
+					"df = spark.createDataFrame(row_list)\r\n",
+					"(df\r\n",
+					"    .write.format(\"csv\")\r\n",
+					"    .mode(\"overwrite\")\r\n",
+					"    .option(\"header\", \"true\")\r\n",
+					"    .save(f\"abfss://wwi-02@asadatalaket20210731.dfs.core.windows.net/sale-poc/{filedest}\"))"
+				],
+				"execution_count": 10
+			}
+		]
+	}
+}

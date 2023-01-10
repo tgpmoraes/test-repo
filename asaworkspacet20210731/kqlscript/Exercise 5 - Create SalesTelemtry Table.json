@@ -1,0 +1,16 @@
+{
+	"name": "Exercise 5 - Create SalesTelemtry Table",
+	"properties": {
+		"content": {
+			"query": ".create table SalesTelemetry ( CustomerId:int32, ProductId:int32, Timestamp:datetime, Url:string)",
+			"metadata": {
+				"language": "kql"
+			},
+			"currentConnection": {
+				"poolName": "asadaxt20210731",
+				"databaseName": "Sales"
+			}
+		},
+		"type": "KqlQuery"
+	}
+}

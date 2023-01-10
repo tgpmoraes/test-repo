@@ -1,0 +1,17 @@
+{
+	"name": "Exercise 1 - Create External Table",
+	"properties": {
+		"content": {
+			"query": "\nCREATE DATABASE demo;\nUSE demo;\n\nSELECT * FROM sys.external_data_sources;\nDROP EXTERNAL DATA SOURCE WwiDataADLS;\nCREATE EXTERNAL DATA SOURCE WwiDataADLS\nWITH (LOCATION = 'abfss://wwi@asadatalaket20210731.dfs.core.windows.net') ;\nGO\n\nSELECT * FROM sys.external_file_formats;\nDROP EXTERNAL FILE FORMAT CsvFormat;\nCREATE EXTERNAL FILE FORMAT CsvFormat\nWITH ( \n    FORMAT_TYPE = DELIMITEDTEXT, \n    FORMAT_OPTIONS ( FIELD_TERMINATOR = ',', STRING_DELIMITER = '\"')\n);\nGO\n\nDROP EXTERNAL TABLE QuarterlySales;\nCREATE EXTERNAL TABLE QuarterlySales\nWITH (\n    LOCATION = 'quarterly-sales',\n    DATA_SOURCE = WwiDataADLS,\n    FILE_FORMAT = CsvFormat\n)\nAS\nSELECT \n     InvoiceYear,\n     InvoiceQuarter,\n     Sum(cast([Quantity] as int)) as SalesQuantity\nFROM\n    OPENROWSET(\n        BULK 'https://asadatalaket20210731.dfs.core.windows.net/wwi/factsale-deltalake',\n        FORMAT = 'DELTA'\n    ) AS [result]\nWHERE InvoiceYear=2012\nGROUP BY\n     InvoiceYear,\n     InvoiceQuarter\n\nSELECT * FROM QuarterlySales",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "demo",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

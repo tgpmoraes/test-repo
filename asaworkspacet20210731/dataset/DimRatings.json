@@ -1,0 +1,30 @@
+{
+	"name": "DimRatings",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sqlpool01",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OpenHack"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "MovieRatingSK",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "MovieRatingDescription",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "PRD",
+			"table": "DimRatings"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

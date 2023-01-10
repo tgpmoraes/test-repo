@@ -1,0 +1,117 @@
+{
+	"name": "DFDimActors",
+	"properties": {
+		"folder": {
+			"name": "OpenHack"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "stgMovieActors",
+						"type": "DatasetReference"
+					},
+					"name": "stgMovieActors"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimCategories",
+						"type": "DatasetReference"
+					},
+					"name": "DimCategories"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimRatings",
+						"type": "DatasetReference"
+					},
+					"name": "DimRatings"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DimMovies",
+						"type": "DatasetReference"
+					},
+					"name": "DimMovies"
+				},
+				{
+					"dataset": {
+						"referenceName": "ChangeLogTb",
+						"type": "DatasetReference"
+					},
+					"name": "LogMovies"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimMovieActors",
+						"type": "DatasetReference"
+					},
+					"name": "DimMovieActors"
+				},
+				{
+					"dataset": {
+						"referenceName": "ChangeLogTb",
+						"type": "DatasetReference"
+					},
+					"name": "LogMovieActors"
+				},
+				{
+					"dataset": {
+						"referenceName": "DimActors",
+						"type": "DatasetReference"
+					},
+					"name": "DimActors"
+				},
+				{
+					"dataset": {
+						"referenceName": "ChangeLogTb",
+						"type": "DatasetReference"
+					},
+					"name": "LogActors"
+				}
+			],
+			"transformations": [
+				{
+					"name": "MapDimActors"
+				},
+				{
+					"name": "SplitNullActorID"
+				},
+				{
+					"name": "AddGender"
+				},
+				{
+					"name": "HardCodeLogActor"
+				},
+				{
+					"name": "ActorsSK"
+				},
+				{
+					"name": "MovieSK"
+				},
+				{
+					"name": "MovieCategory"
+				},
+				{
+					"name": "MovieRatings"
+				},
+				{
+					"name": "ConditionalSplit1"
+				},
+				{
+					"name": "MovieTitleNotNull"
+				},
+				{
+					"name": "HardCodeLogMovie"
+				},
+				{
+					"name": "HardCodeLogMovieActors"
+				}
+			],
+			"script": "source(output(\n\t\tactorid as string,\n\t\tactor as string,\n\t\tmovieid as string,\n\t\tmovietitle as string,\n\t\tgenre as string,\n\t\trating as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tstaged: true) ~> stgMovieActors\nsource(output(\n\t\tMovieCategorySK as integer,\n\t\tMovieCategoryDescription as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tstaged: true) ~> DimCategories\nsource(output(\n\t\tMovieRatingSK as integer,\n\t\tMovieRatingDescription as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tstaged: true) ~> DimRatings\nstgMovieActors select(mapColumn(\n\t\tactorid,\n\t\tactor,\n\t\tmovieid,\n\t\tmovietitle,\n\t\tgenre,\n\t\trating\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> MapDimActors\nAddGender split(length(actorid) > 0,\n\tdisjoint: false) ~> SplitNullActorID@(ActorIDNotNull, ActorIDNull)\nMapDimActors derive(ActorGender = 'X',\n\t\tMovieRunTimeMin = 0,\n\t\tgenre = iif(length(genre) == 0, 'Not Available', genre),\n\t\trating = iif(length(rating) == 0, 'Null', rating)) ~> AddGender\nSplitNullActorID@ActorIDNull derive(DatabaseName = 'TestDW',\n\t\tEventType = 'Null value',\n\t\tObjectName = 'ActorID',\n\t\tObjectType = 'varchar',\n\t\tSqlCommand = 'Insert',\n\t\tEventDate = currentTimestamp(),\n\t\tLoginName = 'hacker168e',\n\t\tLogID = uuid()) ~> HardCodeLogActor\nSplitNullActorID@ActorIDNotNull keyGenerate(output(ActorSK as long),\n\tstartAt: 1L,\n\tstepValue: 1L) ~> ActorsSK\nMovieTitleNotNull@MovieTitleNotNull keyGenerate(output(MovieSK as long),\n\tstartAt: 1L,\n\tstepValue: 1L) ~> MovieSK\nMovieSK, DimCategories lookup(genre == MovieCategoryDescription,\n\tmultiple: false,\n\tpickup: 'first',\n\tasc(MovieCategoryDescription, true),\n\tbroadcast: 'auto')~> MovieCategory\nMovieCategory, DimRatings lookup(rating == MovieRatingDescription,\n\tmultiple: false,\n\tpickup: 'first',\n\tasc(MovieRatingDescription, true),\n\tbroadcast: 'auto')~> MovieRatings\nAddGender split(length(actorid) > 0,\n\tdisjoint: false) ~> ConditionalSplit1@(MovieIDNotNull, MovieIDNull)\nAddGender split(length(actorid) > 0,\n\tdisjoint: false) ~> MovieTitleNotNull@(MovieTitleNotNull, MovieTitlNull)\nMovieTitleNotNull@MovieTitlNull derive(DatabaseName = 'TestDW',\n\t\tEventType = 'Null value',\n\t\tObjectName = 'MovieID',\n\t\tObjectType = 'varchar',\n\t\tSqlCommand = 'Insert',\n\t\tEventDate = currentTimestamp(),\n\t\tLoginName = 'hacker168e',\n\t\tLogID = uuid()) ~> HardCodeLogMovie\nConditionalSplit1@MovieIDNull derive(DatabaseName = 'TestDW',\n\t\tEventType = 'Null value',\n\t\tObjectName = 'MovieActors',\n\t\tObjectType = 'varchar',\n\t\tSqlCommand = 'Insert',\n\t\tEventDate = currentTimestamp(),\n\t\tLoginName = 'hacker168e',\n\t\tLogID = uuid()) ~> HardCodeLogMovieActors\nMovieRatings sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tMovieSK as integer,\n\t\tMovieID as string,\n\t\tMovieTitle as string,\n\t\tMovieCategorySK as integer,\n\t\tMovieRatingSK as integer,\n\t\tMovieRunTimeMin as integer\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tMovieSK,\n\t\tMovieID = movieid,\n\t\tMovieTitle = movietitle,\n\t\tMovieCategorySK,\n\t\tMovieRatingSK,\n\t\tMovieRunTimeMin\n\t)) ~> DimMovies\nHardCodeLogMovie sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tLogId as string,\n\t\tDatabaseName as string,\n\t\tEventType as string,\n\t\tObjectName as string,\n\t\tObjectType as string,\n\t\tSqlCommand as string,\n\t\tEventDate as timestamp,\n\t\tLoginName as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tLogId = LogID,\n\t\tDatabaseName,\n\t\tEventType,\n\t\tObjectName,\n\t\tObjectType,\n\t\tSqlCommand,\n\t\tEventDate,\n\t\tLoginName\n\t)) ~> LogMovies\nConditionalSplit1@MovieIDNotNull sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tMovieID as string,\n\t\tActorID as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tMovieID = movieid,\n\t\tActorID = actorid\n\t)) ~> DimMovieActors\nHardCodeLogMovieActors sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tLogId as string,\n\t\tDatabaseName as string,\n\t\tEventType as string,\n\t\tObjectName as string,\n\t\tObjectType as string,\n\t\tSqlCommand as string,\n\t\tEventDate as timestamp,\n\t\tLoginName as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tLogId = LogID,\n\t\tDatabaseName,\n\t\tEventType,\n\t\tObjectName,\n\t\tObjectType,\n\t\tSqlCommand,\n\t\tEventDate,\n\t\tLoginName\n\t)) ~> LogMovieActors\nActorsSK sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tActorSK as integer,\n\t\tActorID as string,\n\t\tActorName as string,\n\t\tActorGender as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tActorSK,\n\t\tActorID = actorid,\n\t\tActorName = actor,\n\t\tActorGender\n\t)) ~> DimActors\nHardCodeLogActor sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tLogId as string,\n\t\tDatabaseName as string,\n\t\tEventType as string,\n\t\tObjectName as string,\n\t\tObjectType as string,\n\t\tSqlCommand as string,\n\t\tEventDate as timestamp,\n\t\tLoginName as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tLogId = LogID,\n\t\tDatabaseName,\n\t\tEventType,\n\t\tObjectName,\n\t\tObjectType,\n\t\tSqlCommand,\n\t\tEventDate,\n\t\tLoginName\n\t)) ~> LogActors"
+		}
+	}
+}

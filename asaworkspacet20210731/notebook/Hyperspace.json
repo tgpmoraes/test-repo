@@ -1,0 +1,347 @@
+{
+	"name": "Hyperspace",
+	"properties": {
+		"nbformat": 0,
+		"nbformat_minor": 0,
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1"
+			},
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"source": [
+					"from hyperspace import *  \r\n",
+					"from com.microsoft.hyperspace import *\r\n",
+					"from com.microsoft.hyperspace.index import *\r\n",
+					"\r\n",
+					"# Disable BroadcastHashJoin, so Spark will use standard SortMergeJoin. Currently, Hyperspace indexes utilize SortMergeJoin to speed up query.\r\n",
+					"spark.conf.set(\"spark.sql.autoBroadcastJoinThreshold\", -1)\r\n",
+					"\r\n",
+					"# Replace the value below with the name of your primary ADLS Gen2 account for your Synapse workspace\r\n",
+					"datalake = 'asagadatalaket20210731'\r\n",
+					"\r\n",
+					"dfSales = spark.read.parquet(\"abfss://wwi-02@\" + datalake + \".dfs.core.windows.net/sale-small/Year=2019/Quarter=Q4/Month=12/*/*.parquet\")\r\n",
+					"dfSales.show(10)\r\n",
+					"\r\n",
+					"dfCustomers = spark.read.load(\"abfss://wwi-02@\" + datalake + \".dfs.core.windows.net/data-generators/generator-customer-clean.csv\", format=\"csv\", header=True)\r\n",
+					"dfCustomers.show(10)\r\n",
+					"\r\n",
+					"# Create an instance of Hyperspace\r\n",
+					"hyperspace = Hyperspace(spark)"
+				],
+				"execution_count": 6
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"#create indexes: each one contains a name, a set of indexed columns and a set of included columns\r\n",
+					"indexConfigSales = IndexConfig(\"indexSALES\", [\"CustomerId\"], [\"TotalAmount\"])\r\n",
+					"indexConfigCustomers = IndexConfig(\"indexCUSTOMERS\", [\"CustomerId\"], [\"FullName\"])\r\n",
+					"\r\n",
+					"hyperspace.createIndex(dfSales, indexConfigSales)\t\t\t# only create index once\r\n",
+					"hyperspace.createIndex(dfCustomers, indexConfigCustomers)\t# only create index once\r\n",
+					"hyperspace.indexes().show()"
+				],
+				"execution_count": 5
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"df1 = dfSales.filter(\"\"\"CustomerId = 200\"\"\").select(\"\"\"TotalAmount\"\"\")\r\n",
+					"df1.show()\r\n",
+					"df1.explain(True)"
+				],
+				"execution_count": 7
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"# Enable Hyperspace - Hyperspace optimization rules become visible to the Spark optimizer and exploit existing Hyperspace indexes to optimize user queries\r\n",
+					"Hyperspace.enable(spark)\r\n",
+					"df1 = dfSales.filter(\"\"\"CustomerId = 200\"\"\").select(\"\"\"TotalAmount\"\"\")\r\n",
+					"df1.show()\r\n",
+					"df1.explain(True)"
+				],
+				"execution_count": 9
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"df1 = dfSales.filter(\"\"\"CustomerId = 200\"\"\").select(\"\"\"TotalAmount\"\"\")\r\n",
+					"\r\n",
+					"spark.conf.set(\"spark.hyperspace.explain.displayMode\", \"html\")\r\n",
+					"hyperspace.explain(df1, True, displayHTML)"
+				],
+				"execution_count": 10
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"eqJoin = dfSales.join(dfCustomers, dfSales.CustomerId == dfCustomers.CustomerId).select(dfSales.TotalAmount, dfCustomers.FullName)\r\n",
+					"\r\n",
+					"hyperspace.explain(eqJoin, True, displayHTML)"
+				],
+				"execution_count": 11
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"# Disable Hyperspace - Hyperspace rules no longer apply during query optimization. Disabling Hyperspace has no impact on created indexes because they remain intact\r\n",
+					"Hyperspace.disable(spark)\r\n",
+					"\r\n",
+					"hyperspace.deleteIndex(\"indexSALES\")\r\n",
+					"hyperspace.vacuumIndex(\"indexSALES\")\r\n",
+					"hyperspace.deleteIndex(\"indexCUSTOMERS\")\r\n",
+					"hyperspace.vacuumIndex(\"indexCUSTOMERS\")"
+				],
+				"execution_count": 12
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"from notebookutils import mssparkutils\r\n",
+					"\r\n",
+					"#\r\n",
+					"# Microsoft Spark Utilities\r\n",
+					"#\r\n",
+					"# https://docs.microsoft.com/en-us/azure/synapse-analytics/spark/microsoft-spark-utilities?pivots=programming-language-python\r\n",
+					"#\r\n",
+					"\r\n",
+					"# Azure storage access info\r\n",
+					"blob_account_name = datalake\r\n",
+					"blob_container_name = 'wwi-02'\r\n",
+					"blob_relative_path = ''\r\n",
+					"linkedServiceName = datalake\r\n",
+					"blob_sas_token = mssparkutils.credentials.getConnectionStringOrCreds(linkedServiceName)\r\n",
+					"\r\n",
+					"# Allow SPARK to access from Blob remotely\r\n",
+					"wasb_path = 'wasbs://%s@%s.blob.core.windows.net/%s' % (blob_container_name, blob_account_name, blob_relative_path)\r\n",
+					"\r\n",
+					"spark.conf.set('fs.azure.sas.%s.%s.blob.core.windows.net' % (blob_container_name, blob_account_name), blob_sas_token)\r\n",
+					"print('Remote blob path: ' + wasb_path)\r\n",
+					"# abfss://wwi-02@asagadatalaket20210714.dfs.core.windows.net"
+				],
+				"execution_count": 19
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"files = mssparkutils.fs.ls('/sale-small')\r\n",
+					"for file in files:\r\n",
+					"    print(file.name, file.isDir, file.isFile, file.path, file.size)\r\n",
+					"\r\n",
+					"mssparkutils.fs.mkdirs('/SomeNewFolder')\r\n",
+					"\r\n",
+					"files = mssparkutils.fs.ls('/')\r\n",
+					"for file in files:\r\n",
+					"    print(file.name, file.isDir, file.isFile, file.path, file.size)"
+				],
+				"execution_count": 21
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					},
+					"collapsed": true
+				},
+				"source": [
+					"def deep_ls(path: str, max_depth=1):\r\n",
+					"    \"\"\"\r\n",
+					"    List all files and folders in specified path and\r\n",
+					"    subfolders within maximum recursion depth.\r\n",
+					"    \"\"\"\r\n",
+					"\r\n",
+					"    # List all files in path and apply sorting rules\r\n",
+					"    li = mssparkutils.fs.ls(path)\r\n",
+					"\r\n",
+					"    # Return all files\r\n",
+					"    for x in li:\r\n",
+					"        if x.size != 0:\r\n",
+					"            yield x\r\n",
+					"\r\n",
+					"    # If the max_depth has not been reached, start\r\n",
+					"    # listing files and folders in subdirectories\r\n",
+					"    if max_depth > 1:\r\n",
+					"        for x in li:\r\n",
+					"            if x.size != 0:\r\n",
+					"                continue\r\n",
+					"            for y in deep_ls(x.path, max_depth - 1):\r\n",
+					"                yield y\r\n",
+					"\r\n",
+					"    # If max_depth has been reached,\r\n",
+					"    # return the folders\r\n",
+					"    else:\r\n",
+					"        for x in li:\r\n",
+					"            if x.size == 0:\r\n",
+					"                yield x\r\n",
+					"                \r\n",
+					"def convertfiles2df(files):\r\n",
+					"    \"\"\"\r\n",
+					"    Converts FileInfo object into Pandas DataFrame to enable display\r\n",
+					"    \"\"\"\r\n",
+					"    # Disable Arrow-based transfers since the Pandas DataFrame is tiny\r\n",
+					"    spark.conf.set(\"spark.sql.execution.arrow.enabled\", \"false\")\r\n",
+					"\r\n",
+					"    schema = ['path','name','size']\r\n",
+					"    df = pd.DataFrame([[getattr(i,j) for j in schema] for i in files], columns = schema).sort_values('path')\r\n",
+					"    return(df)\r\n",
+					" \r\n",
+					"# Example Implementation\r\n",
+					"# ----------------------\r\n",
+					"import pandas as pd\r\n",
+					"from notebookutils import mssparkutils\r\n",
+					"\r\n",
+					"# Azure storage access info\r\n",
+					"adls_account_name = 'wwi-02'\r\n",
+					"adls_container_name = datalake\r\n",
+					"linked_service_name = datalake\r\n",
+					"\r\n",
+					"# Grab SAS token\r\n",
+					"adls_sas_token = mssparkutils.credentials.getConnectionStringOrCreds(linked_service_name)\r\n",
+					"\r\n",
+					"# Configure Spark to access from DFS endpoint\r\n",
+					"root = 'abfss://%s@%s.dfs.core.windows.net/' % (adls_container_name, adls_account_name)\r\n",
+					"spark.conf.set('fs.azure.sas.%s.%s.dfs.core.windows.net' % (adls_container_name, adls_account_name), adls_sas_token)\r\n",
+					"\r\n",
+					"# Get files\r\n",
+					"files = list(deep_ls(root, max_depth=20))\r\n",
+					"\r\n",
+					"# Display with Pretty Printing\r\n",
+					"display(convertfiles2df(files))\r\n",
+					"\r\n",
+					"# Pretty Printing works with default ls as well\r\n",
+					"display(convertfiles2df(mssparkutils.fs.ls(root)))"
+				],
+				"execution_count": 25
+			}
+		]
+	}
+}

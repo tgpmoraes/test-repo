@@ -1,0 +1,33 @@
+{
+	"name": "wwi_sale_small_telemetry_ade",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataExplorer1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureDataExplorerTable",
+		"schema": [
+			{
+				"name": "CustomerId",
+				"type": "int"
+			},
+			{
+				"name": "ProductId",
+				"type": "int"
+			},
+			{
+				"name": "Timestamp",
+				"type": "datetime"
+			},
+			{
+				"name": "Url",
+				"type": "string"
+			}
+		],
+		"typeProperties": {
+			"table": "SalesTelemetry"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

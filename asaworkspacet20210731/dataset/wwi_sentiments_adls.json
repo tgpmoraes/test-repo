@@ -1,0 +1,20 @@
+{
+	"name": "wwi_sentiments_adls",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "asadatalaket20210731",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "bronze/sentiment",
+				"fileSystem": "dev"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

@@ -1,0 +1,17 @@
+{
+	"name": "Workload Group",
+	"properties": {
+		"content": {
+			"query": "-- Workload importance influences the order in which a request gets access to resources. \n-- On a busy system, a request with higher importance has first access to resources. \n-- Importance can also ensure ordered access to locks.\n\nIF EXISTS (SELECT * FROM sys.workload_management_workload_classifiers WHERE name = 'CEO')\nBEGIN\n    DROP WORKLOAD CLASSIFIER CEO;\nEND\nCREATE WORKLOAD CLASSIFIER CEO\n  WITH (WORKLOAD_GROUP = 'largerc'\n  ,MEMBERNAME = 'asa.sql.workload01',IMPORTANCE = High);\n\n/*\nWorkload isolation reserves resources for a workload group. \nResources reserved in a workload group are held exclusively \nfor that workload group to ensure execution. \nWorkload groups also allow you to define the amount of resources \nthat are assigned per request, much like resource classes do. \nWorkload groups give you the ability to reserve or cap the \namount of resources a set of requests can consume. \nFinally, workload groups are a mechanism to apply rules, \nsuch as query timeout, to requests.\n*/\n\nIF NOT EXISTS (SELECT * FROM sys.workload_management_workload_groups where name = 'CEODemo')\nBEGIN\n    Create WORKLOAD GROUP CEODemo WITH  \n    ( MIN_PERCENTAGE_RESOURCE = 50        -- integer value\n    ,REQUEST_MIN_RESOURCE_GRANT_PERCENT = 25 --  \n    ,CAP_PERCENTAGE_RESOURCE = 100\n    )\nEND",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

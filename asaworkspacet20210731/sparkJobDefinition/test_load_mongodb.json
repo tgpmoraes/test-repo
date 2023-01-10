@@ -1,0 +1,31 @@
+{
+	"name": "test_load_mongodb",
+	"properties": {
+		"targetBigDataPool": {
+			"referenceName": "SparkPool02",
+			"type": "BigDataPoolReference"
+		},
+		"requiredSparkVersion": "3.1",
+		"language": "python",
+		"scanFolder": false,
+		"jobProperties": {
+			"name": "test_load_mongodb",
+			"file": "abfss://tempdata@asadatalaket20210731.dfs.core.windows.net/synapse/workspaces/asaworkspacet20210731/batchjobs/test_load_mongodb/loadmongodb.py",
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "1",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "e20f4e04-60a4-440d-9207-b879e2e030ba"
+			},
+			"args": [],
+			"jars": [],
+			"pyFiles": [],
+			"files": [],
+			"driverMemory": "56g",
+			"driverCores": 8,
+			"executorMemory": "56g",
+			"executorCores": 8,
+			"numExecutors": 2
+		}
+	}
+}

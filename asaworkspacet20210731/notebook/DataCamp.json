@@ -1,0 +1,422 @@
+{
+	"name": "DataCamp",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "SparkPool04",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"runAsWorkspaceSystemIdentity": false,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "80508088-afb3-47b6-b2cf-f1c8e005d13f"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"synapse_widget": {
+				"version": "0.1",
+				"state": {
+					"43c52f78-5206-41e7-bc90-af3ef72ea98c": {
+						"type": "Synapse.DataFrame",
+						"sync_state": {
+							"table": {
+								"rows": [
+									{
+										"0": "19270",
+										"1": "Adolph Fredrik Ture Oskarsson Cederstrm",
+										"2": "M",
+										"3": "25",
+										"4": "NA",
+										"5": "NA",
+										"6": "Sweden",
+										"7": "SWE",
+										"8": "1912 Summer",
+										"9": "1912",
+										"10": "Summer",
+										"11": "Stockholm",
+										"12": "Shooting",
+										"13": "Shooting Men's Running Target, Single Shot",
+										"14": "NA"
+									},
+									{
+										"0": "19271",
+										"1": "Eva Gunilla Cederstrm (-Warchalowski)",
+										"2": "F",
+										"3": "25",
+										"4": "179",
+										"5": "68",
+										"6": "Sweden",
+										"7": "SWE",
+										"8": "1968 Summer",
+										"9": "1968",
+										"10": "Summer",
+										"11": "Mexico City",
+										"12": "Athletics",
+										"13": "Athletics Women's Long Jump",
+										"14": "NA"
+									},
+									{
+										"0": "19271",
+										"1": "Eva Gunilla Cederstrm (-Warchalowski)",
+										"2": "F",
+										"3": "25",
+										"4": "179",
+										"5": "68",
+										"6": "Sweden",
+										"7": "SWE",
+										"8": "1968 Summer",
+										"9": "1968",
+										"10": "Summer",
+										"11": "Mexico City",
+										"12": "Athletics",
+										"13": "Athletics Women's Pentathlon",
+										"14": "NA"
+									},
+									{
+										"0": "19272",
+										"1": "Sulo Elis Cederstrm (-Seteri)",
+										"2": "M",
+										"3": "33",
+										"4": "NA",
+										"5": "NA",
+										"6": "Finland",
+										"7": "FIN",
+										"8": "1936 Summer",
+										"9": "1936",
+										"10": "Summer",
+										"11": "Berlin",
+										"12": "Shooting",
+										"13": "Shooting Men's Rapid-Fire Pistol, 25 metres",
+										"14": "NA"
+									},
+									{
+										"0": "19273",
+										"1": "Andrea del Rosario Cedrn Rodrguez",
+										"2": "F",
+										"3": "18",
+										"4": "169",
+										"5": "62",
+										"6": "Peru",
+										"7": "PER",
+										"8": "2012 Summer",
+										"9": "2012",
+										"10": "Summer",
+										"11": "London",
+										"12": "Swimming",
+										"13": "Swimming Women's 400 metres Freestyle",
+										"14": "NA"
+									},
+									{
+										"0": "19273",
+										"1": "Andrea del Rosario Cedrn Rodrguez",
+										"2": "F",
+										"3": "22",
+										"4": "169",
+										"5": "62",
+										"6": "Peru",
+										"7": "PER",
+										"8": "2016 Summer",
+										"9": "2016",
+										"10": "Summer",
+										"11": "Rio de Janeiro",
+										"12": "Swimming",
+										"13": "Swimming Women's 200 metres Freestyle",
+										"14": "NA"
+									},
+									{
+										"0": "19274",
+										"1": "Carlos Cedron Gutirrez",
+										"2": "M",
+										"3": "27",
+										"4": "176",
+										"5": "84",
+										"6": "Peru",
+										"7": "PER",
+										"8": "1960 Summer",
+										"9": "1960",
+										"10": "Summer",
+										"11": "Roma",
+										"12": "Shooting",
+										"13": "Shooting Men's Small-Bore Rifle, Three Positions, 50 metres",
+										"14": "NA"
+									},
+									{
+										"0": "19274",
+										"1": "Carlos Cedron Gutirrez",
+										"2": "M",
+										"3": "27",
+										"4": "176",
+										"5": "84",
+										"6": "Peru",
+										"7": "PER",
+										"8": "1960 Summer",
+										"9": "1960",
+										"10": "Summer",
+										"11": "Roma",
+										"12": "Shooting",
+										"13": "Shooting Men's Small-Bore Rifle, Prone, 50 metres",
+										"14": "NA"
+									},
+									{
+										"0": "19275",
+										"1": "Paul Ceesay",
+										"2": "M",
+										"3": "25",
+										"4": "185",
+										"5": "70",
+										"6": "Gambia",
+										"7": "GAM",
+										"8": "1984 Summer",
+										"9": "1984",
+										"10": "Summer",
+										"11": "Los Angeles",
+										"12": "Athletics",
+										"13": "Athletics Men's 1,500 metres",
+										"14": "NA"
+									},
+									{
+										"0": "19276",
+										"1": "Peter Ceesay",
+										"2": "M",
+										"3": "25",
+										"4": "183",
+										"5": "71",
+										"6": "Gambia",
+										"7": "GAM",
+										"8": "1984 Summer",
+										"9": "1984",
+										"10": "Summer",
+										"11": "Los Angeles",
+										"12": "Athletics",
+										"13": "Athletics Men's 800 metres",
+										"14": "NA"
+									}
+								],
+								"schema": [
+									{
+										"key": "0",
+										"name": "ID",
+										"type": "string"
+									},
+									{
+										"key": "1",
+										"name": "Name",
+										"type": "string"
+									},
+									{
+										"key": "2",
+										"name": "Sex",
+										"type": "string"
+									},
+									{
+										"key": "3",
+										"name": "Age",
+										"type": "string"
+									},
+									{
+										"key": "4",
+										"name": "Height",
+										"type": "string"
+									},
+									{
+										"key": "5",
+										"name": "Weight",
+										"type": "string"
+									},
+									{
+										"key": "6",
+										"name": "Team",
+										"type": "string"
+									},
+									{
+										"key": "7",
+										"name": "NOC",
+										"type": "string"
+									},
+									{
+										"key": "8",
+										"name": "Games",
+										"type": "string"
+									},
+									{
+										"key": "9",
+										"name": "Year",
+										"type": "string"
+									},
+									{
+										"key": "10",
+										"name": "Season",
+										"type": "string"
+									},
+									{
+										"key": "11",
+										"name": "City",
+										"type": "string"
+									},
+									{
+										"key": "12",
+										"name": "Sport",
+										"type": "string"
+									},
+									{
+										"key": "13",
+										"name": "Event",
+										"type": "string"
+									},
+									{
+										"key": "14",
+										"name": "Medal",
+										"type": "string"
+									}
+								]
+							},
+							"isSummary": false,
+							"language": "scala"
+						},
+						"persist_state": {
+							"view": {
+								"type": "details",
+								"chartOptions": {
+									"chartType": "bar",
+									"aggregationType": "count",
+									"categoryFieldKeys": [
+										"0"
+									],
+									"seriesFieldKeys": [
+										"0"
+									],
+									"isStacked": false
+								}
+							}
+						}
+					}
+				}
+			},
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/fbf033a1-3ebb-4140-bb7f-b406cf96c1b7/resourceGroups/data-engineering-synapse/providers/Microsoft.Synapse/workspaces/asaworkspacet20210731/bigDataPools/SparkPool04",
+				"name": "SparkPool04",
+				"type": "Spark",
+				"endpoint": "https://asaworkspacet20210731.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/SparkPool04",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net",
+					"authHeader": null
+				},
+				"sparkVersion": "3.2",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"extraHeader": null
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"microsoft": {
+						"language": "python"
+					},
+					"collapsed": false
+				},
+				"source": [
+					"%%pyspark\r\n",
+					"athlete_events_spark = spark.read.load('abfss://staging@asadatalaket20210731.dfs.core.windows.net/athlete_events.csv', format='csv'\r\n",
+					"## If header exists uncomment line below\r\n",
+					", header=True\r\n",
+					")\r\n",
+					"display(athlete_events_spark.limit(10))"
+				],
+				"execution_count": 10
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"from pyspark.sql.types import IntegerType\r\n",
+					"\r\n",
+					"athlete_events_spark = athlete_events_spark.withColumn('ID',athlete_events_spark.ID.cast(IntegerType())) \\\r\n",
+					"                                           .withColumn('Age',athlete_events_spark.Age.cast(IntegerType())) \\\r\n",
+					"                                           .withColumn('Year',athlete_events_spark.Year.cast(IntegerType()))\r\n",
+					"\r\n",
+					"# Print the type of athlete_events_spark\r\n",
+					"print(type(athlete_events_spark))\r\n",
+					"\r\n",
+					"# Print the schema of athlete_events_spark\r\n",
+					"print(athlete_events_spark.printSchema())"
+				],
+				"execution_count": 19
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# Print out the number of missing values per column\r\n",
+					"athlete_events_spark = athlete_events_spark.filter(athlete_events_spark.Age.isNotNull()) \\\r\n",
+					"                                           .filter(athlete_events_spark.Year.isNotNull())"
+				],
+				"execution_count": 32
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# # Group by the Year, and find the mean Age\r\n",
+					"print(athlete_events_spark.groupBy('Year').mean('Age'))\r\n",
+					"\r\n",
+					"# # Group by the Year, and find the mean Age\r\n",
+					"print(athlete_events_spark.groupBy('Year').mean('Age').orderBy('Year').show())"
+				],
+				"execution_count": 33
+			}
+		]
+	}
+}

@@ -1,0 +1,35 @@
+{
+	"name": "DFDimRatings",
+	"properties": {
+		"folder": {
+			"name": "OpenHack"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "stgCatalogRatings",
+						"type": "DatasetReference"
+					},
+					"name": "stgCatalogRatings"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DimRatings",
+						"type": "DatasetReference"
+					},
+					"name": "DimRatings"
+				}
+			],
+			"transformations": [
+				{
+					"name": "MovieRatingSK"
+				}
+			],
+			"script": "source(output(\n\t\tRating as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table',\n\tstaged: true) ~> stgCatalogRatings\nstgCatalogRatings keyGenerate(output(MovieRatingSK as long),\n\tstartAt: 1L,\n\tstepValue: 1L) ~> MovieRatingSK\nMovieRatingSK sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinput(\n\t\tMovieRatingSK as integer,\n\t\tMovieRatingDescription as string\n\t),\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tstaged: true,\n\tallowCopyCommand: true,\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\terrorHandlingOption: 'stopOnFirstError',\n\tmapColumn(\n\t\tMovieRatingSK,\n\t\tMovieRatingDescription = Rating\n\t)) ~> DimRatings"
+		}
+	}
+}
