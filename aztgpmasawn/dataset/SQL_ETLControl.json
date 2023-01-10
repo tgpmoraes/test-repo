@@ -1,0 +1,13 @@
+{
+	"name": "SQL_ETLControl",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "code_ss",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": []
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

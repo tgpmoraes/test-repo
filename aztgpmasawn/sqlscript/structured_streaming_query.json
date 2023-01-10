@@ -1,0 +1,17 @@
+{
+	"name": "structured_streaming_query",
+	"properties": {
+		"content": {
+			"query": "SELECT count(*) FROM [default].[dbo].[eventhubdata]\nSelect body from [default].[dbo].[eventhubdata] order by enqueuedTime DESC;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

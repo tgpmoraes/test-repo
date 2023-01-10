@@ -1,0 +1,19 @@
+{
+	"name": "CETASDestination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "aztgpmasawn-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "aggregated_data",
+				"fileSystem": "destlocation"
+			}
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

@@ -1,0 +1,16 @@
+{
+	"name": "code_ss",
+	"type": "Microsoft.Synapse/workspaces/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=code;initial catalog=AdventureWorksDW2020;user id=sa",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJkODQ5MzVjNy0wMWYyLTQ2YjUtYTI3Zi0zMjc2MjFjYjBmMjQiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "IntegrationRuntime1",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
